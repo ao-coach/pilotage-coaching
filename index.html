@@ -1,0 +1,1278 @@
+<!doctype html>
+<!--
+  Suivi de pratique de coaching
+  Copyright 2026 Allan Oudomphong
+  Licence PolyForm Shield 1.0.0 : https://polyformproject.org/licenses/shield/1.0.0
+  Required Notice: Copyright 2026 Allan Oudomphong
+-->
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Suivi de pratique</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#002327">
+<link rel="icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--am:#822239;--jet:#002327;--gw:#FBF9FF;--grey:#797D81;--afb:#508AA8;--line:#E6E3EC;--soft:#F4F2F7;--red:#C9727B;--redbg:#F8E6E8;--bluebg:#E4EFF5}
+*{box-sizing:border-box;margin:0}
+body{font-family:Nunito,sans-serif;background:var(--gw);color:var(--jet);display:flex;min-height:100vh}
+button,input,select,textarea{font-family:inherit;color:inherit}
+.side{width:92px;flex:none;background-position:center;background-size:cover;position:sticky;top:0;height:100vh;opacity:.92}
+main{flex:1;padding:0 36px 48px;max-width:1360px;min-width:0}
+.banner{background:#FFF2B8;border:1px solid #F1DA7A;color:#5C4A00;border-radius:0 0 12px 12px;padding:9px 16px;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.banner button{margin-left:auto;background:#5C4A00;color:#FFF2B8;border:0;border-radius:8px;padding:6px 14px;font-weight:800;font-size:13px;cursor:pointer;white-space:nowrap}
+.top{display:flex;align-items:center;gap:22px;margin:18px 0 18px}
+.tabs{display:flex;gap:4px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:4px}
+.tabs button{border:0;background:none;padding:7px 16px;border-radius:9px;font-weight:700;font-size:14px;color:var(--grey);cursor:pointer}
+.tabs button.on{background:var(--jet);color:#fff}
+.status{margin-left:auto;font-size:12.5px;color:var(--grey);display:flex;align-items:center;gap:7px}
+.status i{width:8px;height:8px;border-radius:50%;background:#5BA88A;transition:.2s}
+.status.busy i,.status.local i{background:#E0A43A}.status.err i{background:#C23B3B}
+header{display:flex;align-items:center;gap:18px;margin-bottom:24px}
+.logo{width:58px;height:58px;border-radius:50%;object-fit:cover;flex:none}
+.logo.ini{display:grid;place-items:center;background:var(--jet);color:#fff;font-family:'Noto Serif',serif;font-size:20px}
+h1{font-family:'Noto Serif',serif;font-weight:400;font-size:30px;position:relative;line-height:1.1}
+h1:after{content:"";position:absolute;left:0;bottom:-7px;width:120px;height:3px;background:var(--jet)}
+.sub{color:var(--grey);font-size:15px;margin-top:12px;font-style:italic}
+.cta{margin-left:auto;background:var(--am);color:#fff;border:0;border-radius:12px;padding:12px 22px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.15);white-space:nowrap}
+.cta:hover{filter:brightness(1.08)}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+h2{font-family:'Noto Serif',serif;font-weight:400;font-size:20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+h2 em{font-family:Nunito,sans-serif;font-style:italic;color:var(--am);font-size:13.5px}
+h3{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);margin:18px 0 8px}
+.sec{margin-top:22px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.kpi{background:var(--jet);color:#fff;border-radius:14px;padding:18px 20px;position:relative;overflow:hidden}
+.kpi .l{font-size:13px;opacity:.75;font-weight:700}
+.kpi .v{font-family:'Noto Serif',serif;font-size:44px;margin-top:2px}
+.kpi .v small{font-size:18px;opacity:.7}
+.kpi .d{font-size:12.5px;color:#B5D2E0;font-weight:600} .kpi .d b{color:#fff}
+.kpi svg{position:absolute;right:16px;bottom:16px}
+.kpis2{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+.k2{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.k2 .v{font-family:'Noto Serif',serif;font-size:24px} .k2 .l{color:var(--grey);font-size:13px;margin-left:6px}
+.k2 .d{font-size:12px;color:var(--am);font-weight:700;margin-top:1px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.yearbar{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 10px;font-size:12.5px;color:var(--grey);margin:8px 0 6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.legend.box span{user-select:none;padding:3px 9px;border:1px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;transition:.15s}
+.legend.box span.drg{cursor:grab}
+.legend.box span:hover{border-color:var(--afb)} .legend.box span.over{border-color:var(--am);background:var(--soft)} .legend.box span.drag{opacity:.4}
+.legend.box span.off{opacity:.4;text-decoration:line-through}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px;margin-left:auto;font-family:Nunito,sans-serif}
+.seg button{border:0;background:none;border-radius:7px;padding:4px 10px;font-size:12.5px;font-weight:700;color:var(--grey);cursor:pointer}
+.seg button.on{background:var(--jet);color:#fff}
+svg text{font-family:Nunito,sans-serif;fill:var(--grey);font-size:11px}
+.sel{border:1px solid var(--line);border-radius:9px;padding:5px 10px;font-size:13.5px;font-weight:700;background:#fff;cursor:pointer}
+h2 .sel{margin-left:auto}
+.ed{border:1px solid transparent;background:transparent;border-radius:8px;padding:5px 7px;width:100%;font-size:14px;transition:.12s}
+.ed:hover{border-color:var(--line);background:#fff}
+.ed:focus{background:#fff;outline:2px solid var(--afb);border-color:transparent}
+/* suivi indicateurs */
+.obj{width:100%;border-collapse:separate;border-spacing:0;margin-top:14px;table-layout:fixed}
+.obj th{font-weight:400;text-align:left;padding:10px 12px;vertical-align:bottom}
+.obj th .h{font-family:'Noto Serif',serif;font-size:17px} .obj th .s{font-size:12px;font-weight:800;letter-spacing:.04em}
+.obj td{padding:8px 12px;border-top:1px solid var(--line);vertical-align:top}
+.obj td:first-child,.obj th:first-child{width:180px}
+.obj td:first-child{font-weight:700;font-size:14px;padding-top:14px}
+.obj .l0{background:color-mix(in srgb,var(--am) 6%,#fff)} .obj .l1{background:color-mix(in srgb,var(--am) 3%,#fff)} .obj .l2{background:color-mix(in srgb,var(--am) 1.5%,#fff)}
+.obj th.l0,.obj th.l1,.obj th.l2{border-radius:12px 12px 0 0}
+.obj th.l0{color:var(--am)} .obj th.l1{color:color-mix(in srgb,var(--am) 65%,#999)} .obj th.l2{color:color-mix(in srgb,var(--am) 35%,#aaa)}
+.obj td.l1 .ed,.obj td.l1 .prog{opacity:.85} .obj td.l2 .ed,.obj td.l2 .prog{opacity:.7}
+.ed.big{font-family:'Noto Serif',serif;font-size:19px;padding:3px 7px}
+textarea.ed{resize:none;overflow:hidden;font-style:italic;line-height:1.35;font-size:13.5px;display:block}
+.prog{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--grey);padding:0 7px;margin-top:2px}
+.bar{flex:1;height:5px;border-radius:3px;background:#EEEAF0;overflow:hidden}
+.bar b{display:block;height:100%;border-radius:3px;background:var(--afb)}
+.l0 .bar b{background:var(--am)} .l1 .bar b{background:color-mix(in srgb,var(--am) 55%,#fff)} .l2 .bar b{background:color-mix(in srgb,var(--am) 28%,#fff)}
+/* objectifs prioritaires */
+.prios{list-style:none;padding:0;margin-top:12px}
+.prios li{display:grid;grid-template-columns:22px 34px 1fr auto;gap:10px;align-items:center;padding:8px 6px;border-radius:12px;border:1px solid transparent;transition:.15s}
+.prios li.empty{display:block}
+.prios li:hover{background:var(--soft)} .prios li.drag{opacity:.4} .prios li.over{border-color:var(--afb);background:#F0F6F9}
+.handle{cursor:grab;color:#B5B7BA;font-size:16px;text-align:center;user-select:none}
+.rank{width:30px;height:30px;border-radius:50%;background:var(--jet);color:#fff;display:grid;place-items:center;font-family:'Noto Serif',serif;font-size:15px}
+.prios li:nth-child(n+4) .rank{background:#fff;color:var(--jet);border:1.5px solid var(--jet)}
+.prios .ed.t{font-weight:800;font-size:15px;padding:2px 7px} .prios .ed.dsc{color:var(--grey);font-size:13.5px;padding:2px 7px}
+.ibtn{border:0;background:none;color:#B5B7BA;cursor:pointer;font-size:15px;padding:4px 6px;border-radius:6px}
+.ibtn:hover{color:var(--jet);background:#fff} .ibtn.del:hover{color:var(--am)} .ibtn:disabled{opacity:.3;cursor:default}
+.addl{border:1px dashed #CFCBD6;background:none;color:var(--am);font-weight:700;font-size:13.5px;padding:8px 14px;border-radius:10px;cursor:pointer;margin-top:10px}
+.addl:hover{border-color:var(--am)}
+/* plan d'action */
+.pills{display:flex;gap:6px;margin-left:auto}
+.pill{border:1px solid var(--line);background:#fff;border-radius:20px;padding:5px 12px;font-size:13px;font-weight:700;color:var(--grey);cursor:pointer;display:flex;gap:7px;align-items:center;font-family:Nunito,sans-serif}
+.pill span{background:var(--soft);border-radius:10px;padding:0 7px;font-size:12px}
+.pill.realisee{color:var(--afb)} .pill.annulee{color:var(--red)}
+.pill.on{background:var(--jet);color:#fff;border-color:var(--jet)}
+.pill.realisee.on{background:var(--afb);border-color:var(--afb)} .pill.annulee.on{background:var(--red);border-color:var(--red)}
+.pill.on span{background:rgba(255,255,255,.22)}
+table.act{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+.act th{text-align:left;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);padding:6px 8px;border-bottom:1px solid var(--line)}
+.act td{padding:5px 4px;border-bottom:1px solid var(--line);vertical-align:middle}
+.act select.ed{cursor:pointer} .act input[type=date].ed{width:145px}
+.act .late input{color:var(--am);font-weight:800}
+.act tr.done .ed{color:var(--afb)} .act tr.cancel .ed{color:var(--red)}
+.act tr{transition:.4s} .act tr.fade{opacity:0;transform:translateX(20px)}
+.st{border-radius:8px;padding:5px 8px;font-weight:800;font-size:12.5px;border:0;cursor:pointer}
+.st.encours{background:var(--soft)} .st.realisee{background:var(--bluebg);color:var(--afb)} .st.annulee{background:var(--redbg);color:var(--red)}
+.prio-cell{display:flex;flex-direction:column;gap:2px;min-width:170px}
+/* saisies */
+.filt{display:grid;grid-template-columns:110px 1fr;gap:10px 14px;align-items:center}
+.flab{font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--grey)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:18px;padding:5px 12px;font-weight:700;font-size:13px;cursor:pointer;transition:.12s;display:inline-flex;align-items:center;gap:6px}
+.chip:hover{border-color:var(--afb)}
+.chip.on{background:var(--jet);border-color:var(--jet);color:#fff}
+.chip.type i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.chip.type.on{background:var(--c);border-color:var(--c)} .chip.type.on i{background:#fff}
+.chip small{opacity:.55;font-weight:600} .chip.add{border-style:dashed;color:var(--am)}
+.reset{border:0;background:none;color:var(--am);font-weight:700;cursor:pointer;font-size:13px}
+.sumrow{display:flex;gap:28px;margin:18px 0 4px;flex-wrap:wrap}
+.sumrow div{font-size:12.5px;color:var(--grey)} .sumrow b{display:block;font-family:'Noto Serif',serif;font-weight:400;font-size:22px;color:var(--jet)}
+.pcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;margin-top:16px}
+.pc{border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:linear-gradient(180deg,#fff,#FCFBFE)}
+.pc .nm{font-family:'Noto Serif',serif;font-size:19px;display:flex;align-items:center;gap:10px}
+.bd{font-family:Nunito,sans-serif;font-size:11px;font-weight:800;border-radius:6px;padding:2px 7px;background:var(--bluebg);color:var(--afb);text-transform:uppercase;letter-spacing:.05em}
+.bd.pb{background:#F6E9EC;color:var(--am)} .bd.ot{background:var(--soft);color:var(--grey)}
+.pc .meta{font-size:12.5px;color:var(--grey);margin-top:2px}
+.pc .nums{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0}
+.pc .nums div{font-size:11.5px;color:var(--grey)} .pc .nums b{display:block;font-size:18px;color:var(--jet);font-family:'Noto Serif',serif;font-weight:400}
+.ais{display:grid;grid-template-columns:1fr 90px 26px;gap:4px 8px;font-size:12.5px;align-items:center}
+.ais .bar b{background:var(--afb)}
+.tl{margin-top:12px;height:22px;position:relative;border-top:1px solid var(--line)}
+.tl i{position:absolute;top:-5px;width:9px;height:9px;border-radius:50%;border:1.5px solid #fff}
+.tblwrap{max-height:640px;overflow:auto;margin-top:12px}
+table.ent{width:100%;border-collapse:collapse;font-size:13.5px;min-width:1250px}
+.ent th{text-align:left;font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--grey);padding:8px 4px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:1;white-space:nowrap}
+.ent th.c{text-align:center} .ent th.arch{color:#B5B7BA}
+.ent td{padding:2px 4px;border-bottom:1px solid #F0EEF3;vertical-align:middle;transition:background 1s}
+.ent tr:hover td{background:#FCFBFE} .ent tr.flash td{background:#EEF5F9!important;transition:background .1s}
+.ent .ed{font-size:13px;padding:4px 5px}
+.ent [data-k=com]{min-width:240px}
+.ent .ty{white-space:nowrap} .ent .ty i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:3px;vertical-align:1px}
+.ent .ty select{width:auto;font-weight:700;display:inline-block}
+.plink{cursor:pointer;font-weight:700;border-bottom:1px dotted #B5B7BA;white-space:nowrap} .plink:hover{color:var(--am);border-color:var(--am)}
+.ck{width:20px;height:20px;border-radius:6px;border:2px solid #C9CBCE;display:grid;place-items:center;cursor:pointer;color:#fff;font-size:12px;margin:auto}
+.ck.on{background:var(--am);border-color:var(--am)}
+select.as{appearance:none;-webkit-appearance:none;width:34px;height:26px;border-radius:7px;border:1px solid var(--line);text-align:center;text-align-last:center;font-weight:800;font-size:12.5px;cursor:pointer;background:#fff;display:block;margin:auto}
+.contrat{display:flex;gap:3px;align-items:center;white-space:nowrap}
+.contrat input{width:74px} .contrat select{width:auto}
+.del{border:0;background:none;color:#C9CBCE;cursor:pointer;font-size:14px;padding:4px} .del:hover{color:var(--am)}
+.small{font-size:12.5px;color:var(--grey);font-family:Nunito,sans-serif;font-weight:600;display:flex;align-items:center;gap:6px;cursor:pointer}
+/* paramètres */
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.field{display:grid;grid-template-columns:160px 1fr;gap:10px;align-items:center;margin:8px 0;font-size:14px}
+.field label{font-weight:700;color:var(--grey);font-size:13px}
+.fin{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:15px;background:#fff}
+.fin:focus{outline:2px solid var(--afb);border-color:transparent}
+.imgrow{display:flex;align-items:center;gap:12px}
+.imgprev{width:58px;height:58px;border-radius:50%;background:var(--soft) center/cover;border:1px solid var(--line);flex:none}
+.imgprev.tall{width:40px;height:90px;border-radius:8px}
+.btn2{border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 12px;font-weight:700;font-size:13px;cursor:pointer}
+.btn2:hover{border-color:var(--afb)} .btn2.warn{color:var(--am)}
+.colors{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.colors label{display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:700;color:var(--grey)}
+input[type=color]{width:100%;height:36px;border:1px solid var(--line);border-radius:9px;padding:2px;background:#fff;cursor:pointer}
+table.pt{width:100%;border-collapse:collapse;font-size:13.5px}
+.pt th{text-align:left;font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--grey);padding:6px 4px;border-bottom:1px solid var(--line)}
+.pt td{padding:4px;border-bottom:1px solid #F0EEF3;vertical-align:middle}
+.pt input[type=color]{width:36px;height:30px}
+.pt tr.arch td{opacity:.55}
+.sw{width:38px;height:22px;border-radius:12px;background:#D5D3D9;position:relative;cursor:pointer;transition:.2s;border:0;flex:none}
+.sw:after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.2s}
+.sw.on{background:var(--afb)} .sw.on:after{left:19px}
+.hint{font-size:12.5px;color:var(--grey);margin-top:6px;line-height:1.45}
+/* modal */
+.ov{position:fixed;inset:0;background:rgba(38,38,40,.7);backdrop-filter:blur(2px);display:grid;place-items:center;opacity:0;pointer-events:none;transition:.22s;z-index:20;padding:16px}
+.ov.show{opacity:1;pointer-events:auto}
+.modal{background:#fff;border-radius:18px;width:min(560px,100%);max-height:92vh;overflow:auto;padding:24px 26px;transform:translateY(16px) scale(.98);transition:.22s;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.ov.show .modal{transform:none}
+.mh{display:flex;align-items:center;margin-bottom:6px}
+.x{margin-left:auto;border:0;background:var(--soft);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px}
+.lab{font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);margin:14px 0 7px}
+.two{display:flex;gap:10px;align-items:center}
+.tog{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;flex:1;font-weight:700;font-size:14px;user-select:none}
+.tog b{width:18px;height:18px;border-radius:5px;border:2px solid var(--grey);display:grid;place-items:center;color:#fff;font-size:12px}
+.tog.on{border-color:var(--am)} .tog.on b{background:var(--am);border-color:var(--am)}
+.rate{display:flex;align-items:center;justify-content:space-between;padding:4px 0;font-size:14px;gap:10px}
+.rate small{display:block;font-size:11px;color:var(--grey)}
+.dots{display:flex;gap:5px}
+.dots span{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);cursor:pointer;display:grid;place-items:center;font-size:10.5px;color:var(--grey);font-weight:800}
+.dots span.on{background:var(--afb);border-color:var(--afb);color:#fff}
+.save{margin-top:20px;width:100%;background:var(--am);color:#fff;border:0;border-radius:12px;padding:13px;font-weight:800;font-size:15px;cursor:pointer}
+.hide{display:none!important}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--jet);color:#fff;padding:12px 22px;border-radius:12px;font-weight:700;transition:.3s;opacity:0;z-index:30;display:flex;gap:14px;align-items:center}
+.toast.show{transform:translateX(-50%);opacity:1}
+.toast button{background:none;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:3px 10px;font-weight:800;cursor:pointer}
+.foot{margin-top:30px;color:var(--grey);font-size:12px;display:flex;gap:16px;flex-wrap:wrap}
+.foot a{color:var(--grey);cursor:pointer;text-decoration:underline}
+.empty{color:var(--grey);font-size:13.5px;padding:16px 8px}
+/* verrou / accueil / visite guidée */
+.lock{position:fixed;inset:0;background:var(--gw);z-index:40;display:grid;place-items:center;padding:16px}
+.lock.dim{background:rgba(38,38,40,.7);backdrop-filter:blur(2px)}
+.lockbox{background:#fff;border:1px solid var(--line);border-radius:18px;padding:30px 32px;width:min(420px,100%);box-shadow:0 20px 60px rgba(0,0,0,.12);text-align:center}
+.lockbox.wide{width:min(640px,100%);text-align:left}
+.lockbox h2{justify-content:center;margin:10px 0 6px} .lockbox.wide h2{justify-content:flex-start}
+.lockbox .fin{margin-top:16px}
+.lkerr{color:var(--am);font-weight:700;font-size:13px;min-height:18px;margin-top:8px}
+.lklink{display:block;margin-top:14px;font-size:13px;color:var(--grey);cursor:pointer;text-decoration:underline}
+.lockic{width:54px;height:54px;border-radius:50%;background:var(--jet);display:grid;place-items:center;margin:auto}
+.wchoices{display:grid;gap:10px;margin-top:18px}
+.wch{border:1px solid var(--line);background:#fff;border-radius:14px;padding:14px 16px;text-align:left;cursor:pointer;transition:.15s;font-size:14px}
+.wch:hover{border-color:var(--am);box-shadow:0 4px 14px rgba(0,0,0,.06)}
+.wch b{display:block;font-size:15.5px;margin-bottom:2px} .wch span{color:var(--grey);font-size:13px}
+.wch.ghost{border-style:dashed;text-align:center;color:var(--grey);font-weight:700}
+.reckey{font-family:ui-monospace,Consolas,monospace;font-size:19px;font-weight:700;letter-spacing:.04em;background:var(--soft);border-radius:12px;padding:16px;margin:16px 0;word-break:break-all;text-align:center;user-select:all}
+.lockbtn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 12px;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px}
+.lockbtn:hover{border-color:var(--am);color:var(--am)}
+.tour{position:fixed;right:24px;bottom:24px;width:min(380px,calc(100% - 32px));background:var(--jet);color:#fff;border-radius:16px;padding:18px 20px;z-index:35;box-shadow:0 18px 50px rgba(0,0,0,.3)}
+.tour .stp{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.65}
+.tour h4{font-family:'Noto Serif',serif;font-weight:400;font-size:20px;margin:4px 0 6px}
+.tour p{font-size:13.5px;line-height:1.5;opacity:.9}
+.tour .tb{display:flex;gap:8px;margin-top:14px;align-items:center}
+.tour button{border:0;border-radius:9px;padding:8px 14px;font-weight:800;font-size:13px;cursor:pointer}
+.tour .nx{background:#fff;color:var(--jet);margin-left:auto} .tour .pv{background:rgba(255,255,255,.15);color:#fff} .tour .sk{background:none;color:#fff;opacity:.6;text-decoration:underline;padding:8px 4px}
+.tour .bar{background:rgba(255,255,255,.15);margin-top:12px} .tour .bar b{background:#fff}
+.tourhl{outline:3px solid var(--am);outline-offset:4px;border-radius:14px;transition:outline .2s}
+.secst{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px;margin:6px 0 4px}
+.secst i{width:10px;height:10px;border-radius:50%;background:#C9CBCE} .secst.on i{background:#5BA88A}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+/* parcours de démarrage */
+.wiz{position:fixed;inset:0;z-index:45;background:radial-gradient(120% 90% at 0% 0%,color-mix(in srgb,var(--afb) 14%,var(--gw)) 0%,var(--gw) 60%);display:grid;place-items:center;padding:16px}
+.wzcard{width:min(1040px,100%);height:min(720px,calc(100vh - 32px));display:grid;grid-template-columns:290px 1fr;background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.14)}
+.wzside{color:#fff;padding:28px 26px;display:flex;flex-direction:column;background-size:cover;background-position:center}
+.wzbrand{display:flex;align-items:center;gap:12px} .wzbrand img,.wzbrand .ini{width:50px;height:50px;border-radius:50%;object-fit:cover;flex:none}
+.wzbrand .ini{display:grid;place-items:center;background:rgba(255,255,255,.14);font-family:'Noto Serif',serif;font-size:18px}
+.wzbrand b{display:block;font-family:'Noto Serif',serif;font-weight:400;font-size:19px;line-height:1.15} .wzbrand span{font-size:12.5px;opacity:.7}
+.wzsteps{list-style:none;padding:0;margin:34px 0 0;display:grid;gap:9px;font-size:13.5px}
+.wzsteps li{display:flex;align-items:center;gap:10px;opacity:.5;transition:.2s}
+.wzsteps li b{width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(255,255,255,.6);display:grid;place-items:center;font-size:11px;flex:none}
+.wzsteps li.cur{opacity:1;font-weight:800} .wzsteps li.cur b{background:#fff;color:var(--jet);border-color:#fff}
+.wzsteps li.ok{opacity:.85} .wzsteps li.ok b{background:rgba(255,255,255,.2);border-color:transparent}
+.wzquote{margin-top:auto;font-family:'Noto Serif',serif;font-style:italic;font-size:14px;line-height:1.45;opacity:.85}
+.wzmain{padding:36px 44px 0;display:flex;flex-direction:column;overflow:auto;position:relative}
+.wzkick{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--am);min-height:15px}
+.wzt{font-size:30px;margin:6px 0 6px;display:block}
+.wzlead{color:var(--grey);font-size:15px;line-height:1.5;max-width:620px}
+.wzbody{flex:1;margin-top:22px;padding-bottom:20px;animation:wzin .35s ease}
+@keyframes wzin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.wzfoot{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(255,255,255,0),#fff 30%);display:flex;align-items:center;gap:10px;padding:22px 0 26px}
+.wzfoot button{border:0;border-radius:12px;padding:12px 20px;font-weight:800;font-size:14.5px;cursor:pointer}
+.wzn{background:var(--am);color:#fff;margin-left:auto;padding:12px 28px!important;box-shadow:0 6px 16px rgba(0,0,0,.12)} .wzn:disabled{opacity:.6}
+.wzb{background:var(--soft);color:var(--jet)} .wzs{background:none;color:var(--grey);text-decoration:underline}
+.wzletter{font-family:'Noto Serif',serif;font-size:17px;line-height:1.65;max-width:600px;color:var(--jet)}
+.wzletter p{margin:0 0 12px} .wzletter b{font-weight:600;color:var(--am)}
+.wzletter .sig{margin-top:18px;font-style:italic;font-size:20px} .wzletter .sig span{display:block;font-family:Nunito,sans-serif;font-style:normal;font-size:13px;color:var(--grey)}
+.wzalt{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:26px;padding-top:16px;border-top:1px solid var(--line);font-size:13.5px}
+.wzalt a{color:var(--grey);cursor:pointer;text-decoration:underline} .wzalt a:hover{color:var(--am)}
+.wzcards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.wzc{border:1px solid var(--line);border-radius:18px;padding:20px;background:linear-gradient(180deg,#fff,color-mix(in srgb,var(--afb) 5%,#fff))}
+.wzc .ic{width:44px;height:44px;border-radius:14px;background:var(--jet);display:grid;place-items:center;margin-bottom:12px;color:#fff;font-family:'Noto Serif',serif;font-size:19px}
+.wzc b{display:block;font-size:15.5px;margin-bottom:6px} .wzc p{font-size:13.5px;color:var(--grey);line-height:1.5}
+.wzc p strong{color:var(--jet);font-weight:800}
+.wznote{margin-top:18px;background:var(--soft);border-radius:12px;padding:12px 16px;font-size:13.5px;color:var(--jet)}
+.wzl{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);margin:16px 0 6px}
+.wzgrid2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.pals{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.pal{border:1px solid var(--line);background:#fff;border-radius:12px;padding:9px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:700;font-size:13.5px;text-align:left}
+.pal span{display:flex} .pal i{width:16px;height:16px;border-radius:50%;margin-right:-4px;border:2px solid #fff}
+.pal.on{border-color:var(--am);box-shadow:0 0 0 2px color-mix(in srgb,var(--am) 25%,transparent)}
+details summary{cursor:pointer;font-size:13px;color:var(--grey);margin-top:12px;font-weight:700}
+.stackprev{display:flex;flex-direction:column;gap:3px;padding:14px;border:1px solid var(--line);border-radius:16px;align-self:start}
+.stackprev .r{display:flex;align-items:center;gap:10px;font-size:13px} .stackprev .r i{width:46px;height:24px;border-radius:5px;flex:none}
+.stackprev small{color:var(--grey);font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.wzgrid2.types{grid-template-columns:1fr 220px}
+.flow3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.flow3 div{border-radius:14px;padding:12px 14px;background:var(--soft);font-size:13px;color:var(--grey)} .flow3 b{display:block;color:var(--jet);font-size:14px;margin-bottom:2px}
+.wzh{font-size:15px;font-weight:800;margin:4px 0 8px;display:flex;align-items:baseline;gap:8px} .wzh small{font-weight:600;color:var(--grey);font-size:12.5px}
+.prow{display:grid;grid-template-columns:30px 1fr 1.6fr 30px;gap:8px;align-items:center;margin-bottom:6px}
+.targets{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.targets label{font-size:12px;font-weight:700;color:var(--grey);display:flex;flex-direction:column;gap:4px}
+.arow{display:grid;grid-template-columns:200px 1fr 150px 30px;gap:8px;align-items:center;margin-bottom:6px}
+.ok-box{display:flex;gap:12px;align-items:center;background:var(--bluebg);border-radius:14px;padding:14px 16px;font-weight:700}
+.sumlist{list-style:none;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;font-size:14.5px}
+.sumlist li{display:flex;gap:10px;align-items:center} .sumlist i{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:800;background:var(--bluebg);color:var(--afb);flex:none}
+.sumlist li.no i{background:var(--soft);color:#B5B7BA}
+#recM{z-index:50} .toast{z-index:60}
+@media(max-width:860px){.wzcard{grid-template-columns:1fr;height:calc(100vh - 32px)}.wzside{display:none}.wzmain{padding:24px 20px 0}.wzcards,.flow3,.wzgrid2,.wzgrid2.types,.targets,.sumlist{grid-template-columns:1fr}.arow,.prow{grid-template-columns:1fr}}
+.pt tr[data-i] td:first-child{white-space:nowrap} .pt .handle,.pt .rk{vertical-align:middle}
+.pt tr.drag{opacity:.4} .pt tr.over td{background:#F0F6F9} .pt .handle{cursor:grab;font-size:15px;padding:0 6px}
+.rk{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--soft);font-size:11.5px;font-weight:800;color:var(--grey)}
+.pt tr:first-child .rk{background:var(--jet);color:#fff}
+@media(max-width:1100px){.side{display:none}main{padding:0 16px 40px}.kpis,.kpis2,.row2,.pgrid{grid-template-columns:1fr}.top,header{flex-wrap:wrap}.obj{display:block;overflow-x:auto}.colors{grid-template-columns:repeat(3,1fr)}}
+</style></head><body>
+<div class="side" id="side"></div>
+<main id="main">
+<div class="banner hide" id="banner"><span id="bannerTxt"></span><button id="bannerBtn"></button></div>
+<div class="top">
+  <nav class="tabs"><button class="on" data-tab="dash">Tableau de bord</button><button data-tab="metrics">Métriques</button><button data-tab="list">Mes saisies</button><button data-tab="settings">Paramètres</button></nav>
+  <span class="status" id="status"><i></i><span>Chargement…</span></span>
+  <button class="lockbtn hide" id="lockBtn" title="Verrouiller le carnet"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Verrouiller</button>
+</div>
+<header>
+  <div id="logoBox"></div>
+  <div><h1 id="appTitle"></h1><div class="sub" id="appSub"></div></div>
+  <button class="cta" id="openLog">+ Enregistrer un temps</button>
+</header>
+
+<!-- ===== TABLEAU DE BORD ===== -->
+<div id="dash">
+  <div class="kpis" id="kpisD"></div>
+  <div class="card sec" id="prioCard"><h2>Objectif prioritaire</h2><ul class="prios" id="prios"></ul><button class="addl" id="addPrio">+ Ajouter un objectif prioritaire</button></div>
+  <div class="card sec" id="actCard">
+    <h2>Plan d'action <div class="pills" id="pills"></div></h2>
+    <table class="act"><thead><tr><th style="width:21%">Objectif prioritaire</th><th>Action</th><th style="width:150px">Date prévue</th><th style="width:22%">Résultat</th><th style="width:110px">Statut</th></tr></thead><tbody id="acts"></tbody></table>
+    <button class="addl" id="addAct">+ Ajouter une action</button>
+  </div>
+  <div class="card sec" id="objCard"><h2>Suivi indicateurs<select class="sel" id="qSel"></select></h2><table class="obj" id="obj"></table></div>
+</div>
+
+<!-- ===== MÉTRIQUES ===== -->
+<div id="metrics" class="hide">
+  <div class="kpis" id="kpisM"></div>
+  <div class="kpis2" id="kpis2"></div>
+  <div class="yearbar sec"><span class="flab">Année</span><div class="chips" id="yChips"></div></div>
+  <div class="row2">
+    <div class="card"><h2>Temps passé par mois</h2><div class="legend" id="lg"></div><svg id="monthly" viewBox="0 0 720 250" width="100%"></svg></div>
+    <div class="card"><h2>Aisance <span class="seg" id="easeView"></span></h2><div id="easeMet" class="hide" style="margin-top:8px"></div><div class="legend box" id="easeLg"></div><svg id="ease" viewBox="0 0 720 250" width="100%"></svg></div>
+  </div>
+</div>
+
+<!-- ===== MES SAISIES ===== -->
+<div id="list" class="hide">
+  <div class="card">
+    <div class="filt">
+      <span class="flab">Année</span><div class="chips" id="fY"></div>
+      <span class="flab">Type</span><div class="chips" id="fT"></div>
+      <span class="flab">Personne</span><div class="chips" id="fP"></div>
+    </div>
+    <div class="sumrow" id="sum"></div>
+  </div>
+  <div class="pcards" id="pcards"></div>
+  <div class="card sec">
+    <h2>Détail des saisies <em id="cnt"></em><label class="small" style="margin-left:auto"><input type="checkbox" id="showArch"> Afficher les métriques archivées</label></h2>
+    <div class="tblwrap"><table class="ent"><thead id="rowsHead"></thead><tbody id="rows"></tbody></table></div>
+  </div>
+</div>
+
+<!-- ===== PARAMÈTRES ===== -->
+<div id="settings" class="hide">
+  <div class="card" style="display:flex;align-items:center;gap:14px;margin-bottom:22px"><div><b>Parcours de démarrage</b><div class="hint" style="margin:2px 0 0">Revois pas à pas ton identité, tes entretiens, tes axes de progression, tes priorités, tes actions et ta sécurité.</div></div><button class="btn2" id="reTour" style="margin-left:auto;white-space:nowrap">Relancer le parcours</button></div>
+  <div class="pgrid">
+    <div class="card" id="setIdent">
+      <h2>Identité</h2>
+      <div class="field"><label>Nom</label><input class="fin" data-c="nom" placeholder="Ex. AO Coach"></div>
+      <div class="field"><label>Nom de l'outil</label><input class="fin" data-c="outil" placeholder="Suivi de pratique"></div>
+      <div class="field"><label>Sous-titre</label><input class="fin" data-c="sousTitre"></div>
+    </div>
+    <div class="card" id="setLook">
+      <h2>Apparence</h2>
+      <div class="field"><label>Logo</label><div class="imgrow"><div class="imgprev" id="pLogo"></div><button class="btn2" data-img="logo">Choisir une image</button><button class="btn2 warn" data-imgdel="logo">Retirer</button></div></div>
+      <div class="field"><label>Bandeau de gauche</label><div class="imgrow"><div class="imgprev tall" id="pBand"></div><button class="btn2" data-img="bandeau">Choisir une image</button><button class="btn2 warn" data-imgdel="bandeau">Retirer</button></div></div>
+      <input type="file" id="imgFile" accept="image/*" class="hide">
+      <h3>Couleurs</h3>
+      <div class="colors" id="brandColors"></div>
+      <button class="btn2" id="resetColors" style="margin-top:10px">Revenir à la palette par défaut</button>
+    </div>
+  </div>
+  <div class="card sec" id="setTypes">
+    <h2>Types d'activité</h2>
+    <div class="hint">Classés par importance (glisser pour réordonner) : le n° 1 forme la base des graphiques. Tant que tu n'as pas retouché une couleur de type, elles suivent automatiquement tes couleurs de marque et ce classement. Le rôle de chaque type dans les calculs ne change pas (ex. Conversation + Session = heures de coaching).</div>
+    <table class="pt" style="margin-top:10px"><thead><tr><th style="width:70px">Rang</th><th></th><th>Libellé</th><th>Durée par défaut</th><th>Notes d'aisance</th></tr></thead><tbody id="typeRows"></tbody></table>
+  </div>
+  <div class="card sec" id="setMets">
+    <h2>Métriques d'aisance</h2>
+    <div class="hint">Une métrique « non suivie » disparaît de la saisie mais garde tout son historique : elle reste visible dans les graphiques des périodes où tu l'as notée, et dans Mes saisies avec « Afficher les métriques archivées ». Renommer une métrique conserve ses notes. Une métrique ne peut être supprimée que si elle n'a aucune note.</div>
+    <table class="pt" style="margin-top:12px"><thead><tr><th style="width:70px">Ordre</th><th>Libellé</th><th>Repère du 1</th><th>Repère du 5</th><th>Suivie</th><th>Notes</th><th></th></tr></thead><tbody id="metRows"></tbody></table>
+    <button class="addl" id="addMet">+ Ajouter une métrique</button>
+  </div>
+  <div class="pgrid sec">
+    <div class="card" id="setSec"><h2>Sécurité</h2><div id="secBody"></div></div>
+    <div class="card" id="setStore"><h2>Stockage des données</h2><div id="storeBody"></div></div>
+  </div>
+  <div class="card sec">
+    <h2>Partager à un pair</h2>
+    <div class="hint">L'application ne contient aucune donnée : tu peux l'envoyer telle quelle. Pour donner en plus ta configuration (types, couleurs, métriques) sans tes données, ton nom ni ton logo, exporte un modèle : ton pair le choisit dans « Importer un fichier » à l'accueil.</div>
+    <button class="btn2" id="expModel" style="margin-top:10px">Exporter un modèle sans données</button>
+  </div>
+</div>
+<div class="foot"><span id="footInfo"></span><a id="chDir">Changer de dossier</a><a id="expJson">Exporter JSON</a><a id="expCsv">Exporter CSV</a><a id="impJson">Importer un JSON</a><input type="file" id="impFile" accept=".json" class="hide"><span style="margin-left:auto"><span id="footName"></span> · Outil © 2026 Allan Oudomphong · <a href="https://polyformproject.org/licenses/shield/1.0.0" target="_blank" rel="noopener">Licence PolyForm Shield 1.0.0</a></span></div>
+</main>
+
+<!-- ===== POPUP SAISIE ===== -->
+<div class="ov" id="ov"><div class="modal">
+  <div class="mh"><h2>Enregistrer un temps</h2><button class="x" id="closeLog">✕</button></div>
+  <input type="date" class="fin" id="fDate" style="margin-top:10px">
+  <div class="lab">Type</div><div class="chips" id="mTypes"></div>
+  <div class="lab">Durée</div><div class="chips" id="mDurs"></div>
+  <div id="mPB"><div class="lab">Personne</div><div class="chips" id="mPeople"></div>
+    <input class="fin hide" id="newP" placeholder="Prénom Nom, puis Entrée" style="margin-top:8px"></div>
+  <div class="lab">Ce qu'on a vu</div><input class="fin" id="mCom" placeholder="1 ligne : thème, déclic, pattern repéré…">
+  <div id="mProp" class="hide"><div class="lab">Proposition · montant et durée d'engagement</div>
+    <div class="two"><input type="number" class="fin" id="mEur" placeholder="Montant €" style="width:140px;flex:none"><div class="chips" id="mCdur"></div></div></div>
+  <div id="mCR"><div class="lab">Suivi</div>
+    <div class="two"><div class="tog" id="tCR"><b>✓</b>CR envoyé</div><div class="tog" id="tSY"><b>✓</b>Synthèse écrite</div></div></div>
+  <div id="mAis"><div class="lab">Aisance</div><div id="mRates"></div></div>
+  <button class="save" id="mSave">Enregistrer</button>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<!-- verrou / saisie de secret -->
+<div class="lock hide" id="lock"><div class="lockbox">
+  <div class="lockic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+  <h2 id="lkTitle">Carnet verrouillé</h2><div class="hint" id="lkTxt"></div>
+  <input type="password" class="fin" id="lkPwd" autocomplete="current-password">
+  <div class="lkerr" id="lkErr"></div>
+  <button class="save" id="lkGo" style="margin-top:6px">Déverrouiller</button>
+  <a class="lklink" id="lkRec">J'ai oublié mon mot de passe : utiliser la clé de secours</a>
+  <a class="lklink" id="lkCancel">Annuler</a>
+  <a class="lklink" id="lkOther">Ouvrir un autre carnet ou en créer un nouveau</a>
+</div></div>
+
+<!-- nouveau mot de passe -->
+<div class="lock dim hide" id="pwdM"><div class="lockbox" style="text-align:left">
+  <h2 id="pwTitle" style="justify-content:flex-start">Choisir un mot de passe</h2>
+  <div class="hint">Au moins 10 caractères. Une phrase facile à retenir est idéale (ex. « la-crête-du-vercors-au-matin »). Il n'est jamais enregistré : sans lui ni la clé de secours, personne ne peut rouvrir tes données.</div>
+  <input type="password" class="fin" id="pw1" placeholder="Nouveau mot de passe" autocomplete="new-password">
+  <input type="password" class="fin" id="pw2" placeholder="Confirmer" autocomplete="new-password" style="margin-top:8px">
+  <div class="lkerr" id="pwErr"></div>
+  <div class="btns"><button class="btn2" id="pwCancel">Annuler</button><button class="save" id="pwOk" style="margin:0;flex:1">Valider</button></div>
+</div></div>
+
+<!-- clé de secours -->
+<div class="lock dim hide" id="recM"><div class="lockbox" style="text-align:left;width:min(520px,100%)">
+  <h2 style="justify-content:flex-start">Ta clé de secours</h2>
+  <div class="hint">C'est le seul moyen de rouvrir tes données si tu oublies ton mot de passe. Garde-la hors de cet ordinateur : gestionnaire de mots de passe, ou imprimée et rangée. Elle ne sera plus jamais affichée.</div>
+  <div class="reckey" id="recKey"></div>
+  <div class="btns"><button class="btn2" id="recCopy">Copier</button><button class="btn2" id="recDl">Télécharger en .txt</button></div>
+  <label class="small" style="margin-top:16px"><input type="checkbox" id="recOk"> J'ai mis ma clé de secours en lieu sûr</label>
+  <button class="save" id="recClose" disabled style="opacity:.5">Terminer</button>
+</div></div>
+
+<!-- parcours de démarrage -->
+<div class="wiz hide" id="wiz"><div class="wzcard">
+  <aside class="wzside" id="wzSide"><div class="wzbrand" id="wzBrand"></div><ol class="wzsteps" id="wzSteps"></ol><div class="wzquote" id="wzQuote"></div></aside>
+  <section class="wzmain" id="wzMain">
+    <div class="wzkick" id="wzKicker"></div><h2 class="wzt" id="wzTitle"></h2><div class="wzlead" id="wzLead"></div>
+    <div class="wzbody" id="wzBody"></div>
+    <div class="wzfoot"><button class="wzb" id="wzBack">Retour</button><button class="wzs" id="wzSkip">Plus tard</button><button class="wzn" id="wzNext">Continuer</button></div>
+  </section>
+</div></div>
+
+<script>
+/* =========================================================
+   Suivi de pratique de coaching : application générique et personnalisable.
+   Aucune donnée dans ce fichier : tout est dans coaching-data.json
+   (identité, couleurs, types, métriques, saisies, objectifs…).
+   ========================================================= */
+const VERSION=3, FILE='coaching-data.json', BKDIR='sauvegardes', KEEP=30;
+
+/* ---------- structure fixe (rôle des types dans les calculs) ---------- */
+const TYPE_KEYS=['conversation','proposition','session','reseau','debrief','supervision','annexe'];
+const TYPE_ROLE={conversation:{p:1,cr:1},proposition:{p:1,prop:1},session:{p:1,cr:1},reseau:{p:1},debrief:{p:1},supervision:{p:1},annexe:{}};
+const DEF_ORDER=['session','supervision','debrief','proposition','conversation','reseau','annexe'];
+let STACK=[...DEF_ORDER];
+const COACH=['conversation','session'];
+const DURS=[30,45,60,75,90,120,135,150];
+const MO=['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'];
+const STAT={attente:'En attente',acceptee:'Acceptée',refusee:'Refusée'};
+const BRAND=[['accent','Accent'],['fonce','Foncé'],['fond','Fond'],['gris','Gris'],['bleu','Bleu']];
+
+const PALETTES=[
+ {n:'Océan',c:{accent:'#C8553D',fonce:'#13293D',fond:'#F7F9FB',gris:'#7B8794',bleu:'#2A6F97'}},
+ {n:'Forêt',c:{accent:'#B35C37',fonce:'#1F3A2E',fond:'#F7F8F3',gris:'#7A7F76',bleu:'#5B8C5A'}},
+ {n:'Prune',c:{accent:'#9B3D6E',fonce:'#2B1B33',fond:'#FAF7FB',gris:'#7E7884',bleu:'#6C6FB0'}},
+ {n:'Sable',c:{accent:'#A85A32',fonce:'#3A3226',fond:'#FBF8F2',gris:'#857C70',bleu:'#B98D45'}},
+ {n:'Ardoise',c:{accent:'#D9734E',fonce:'#2E3440',fond:'#F8F9FA',gris:'#7B818C',bleu:'#5E81AC'}},
+ {n:'Lagune',c:{accent:'#E07A5F',fonce:'#0F3B3A',fond:'#F6FAF9',gris:'#76807F',bleu:'#2A9D8F'}}];
+/* 7 couleurs de stack, de la base (rang 1, la plus forte) au sommet, dérivées des couleurs de marque */
+function stackColors(K){return[K.accent,mix(K.accent,'#ffffff',.45),mix(K.fonce,K.bleu,.3),K.bleu,mix(K.bleu,'#ffffff',.45),mix(K.fonce,'#ffffff',.6),mix(K.gris,'#ffffff',.45)]}
+function applyStackColors(C){const S=stackColors(C.couleurs);C.ordre.forEach((k,i)=>C.types[k].c=S[i])}
+function defaultConfig(){const K={...PALETTES[0].c},S=stackColors(K),col=k=>S[DEF_ORDER.indexOf(k)];return{
+ nom:'Mon cabinet',outil:'Suivi de pratique',sousTitre:"C'est en coachant beaucoup et en pratiquant délibérément qu'on devient un excellent coach",
+ couleurs:K,couleursAuto:true,ordre:[...DEF_ORDER],
+ types:{conversation:{l:'Conversation',c:col('conversation'),d:60,ais:true},proposition:{l:'Proposition',c:col('proposition'),d:60,ais:true},session:{l:'Session',c:col('session'),d:90,ais:true},
+  reseau:{l:'Rencontre réseau',c:col('reseau'),d:60,ais:true},debrief:{l:'Débrief',c:col('debrief'),d:90,ais:false},supervision:{l:'Supervision',c:col('supervision'),d:90,ais:false},annexe:{l:'Annexe',c:col('annexe'),d:60,ais:false}},
+ logo:null,bandeau:null,
+ metriques:[{id:'m1',l:"Atteinte de l'obj. du rdv",actif:true,min:'Pas atteint',max:'Atteint'},{id:'m2',l:'Conduite & rapport',actif:true,min:'Challengé',max:'À l\'aise'},{id:'m3',l:'Niveau de jeu',actif:true,min:'Faible',max:'Élevé'}]}}
+/* reprise d'un fichier v2 (avant la personnalisation) */
+function legacyConfig(){const c=defaultConfig();c.nom='AO Coach';c.couleursAuto=false;
+ c.couleurs={accent:'#822239',fonce:'#002327',fond:'#FBF9FF',gris:'#797D81',bleu:'#508AA8'};
+ Object.entries({conversation:'#2F8C93',proposition:'#508AA8',session:'#822239',reseau:'#9CC1D4',debrief:'#234E66',supervision:'#C98A97',annexe:'#C4C6C9'}).forEach(([k,v])=>c.types[k].c=v);
+ c.metriques=[{id:'m1',l:"Atteinte de l'obj. du rdv",actif:true,min:'Pas atteint',max:'Atteint'},{id:'m2',l:'Métamodèle',actif:true,min:'Challengé',max:'À l\'aise'},{id:'m3',l:'Modélisation du pattern',actif:true,min:'Challengé',max:'À l\'aise'},
+  {id:'m4',l:'Conduite & rapport',actif:true,min:'Challengé',max:'À l\'aise'},{id:'m5',l:'Niveau de jeu',actif:true,min:'Faible',max:'Élevé'},{id:'m6',l:'Curseur câlin/challenge',actif:true,min:'Câlin',max:'Challenge'}];return c}
+
+/* ---------- utilitaires ---------- */
+const $=id=>document.getElementById(id);
+const pad=n=>String(n).padStart(2,'0');
+const today=()=>{const d=new Date();return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`};
+const fmtD=m=>!m?'—':m<60?m+' min':Math.floor(m/60)+'h'+(m%60?pad(m%60):'');
+const n1=v=>(Math.round(v*10)/10).toLocaleString('fr-FR');
+const eur=v=>Math.round(v||0).toLocaleString('fr-FR')+' €';
+const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+const dShort=s=>{if(!s)return'';const[y,m,d]=s.split('-');return `${+d} ${MO[m-1].toLowerCase()}${y==today().slice(0,4)?'':' '+y.slice(2)}`};
+const addDays=(s,n)=>{const d=new Date(s+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)};
+const byName=(a,b)=>a.localeCompare(b,'fr',{sensitivity:'base'});
+const nextId=a=>a.reduce((m,x)=>Math.max(m,x.id||0),0)+1;
+function mix(a,b,t){const p=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));const A=p(a),B=p(b);return '#'+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0')).join('')}
+
+/* ---------- état ---------- */
+let DB=null,DIR=null,saveT=null,T=[],TM={},PAL=[];
+const E=()=>DB.entrees, CFG=()=>DB.config;
+const pname=id=>DB.personnes.find(p=>p.id==id)?.nom||'';
+const metrics=()=>CFG().metriques, mActive=()=>metrics().filter(m=>m.actif);
+const hasAis=e=>e.ais&&Object.values(e.ais).some(v=>v);
+
+function migrate(d){
+  d=JSON.parse(JSON.stringify(d||{}));delete d.format;const v=d.version_schema||0;
+  d.personnes=d.personnes||[];d.entrees=d.entrees||[];
+  d.objectifs=(d.objectifs&&!Array.isArray(d.objectifs))?d.objectifs:{};d.priorites=d.priorites||[];d.actions=d.actions||[];d.prefs=d.prefs||{};
+  d.entrees.forEach(e=>{
+    if(e.contrat&&!e.engagement_mois){e.engagement_mois=e.contrat;delete e.contrat}
+    if(Array.isArray(e.ais)){const o={};e.ais.forEach((x,i)=>{if(x)o['m'+(i+1)]=x});e.ais=Object.keys(o).length?o:null}   // v2 : tableau → par identifiant
+  });
+  if(!d.config)d.config=(v===2&&d.entrees.length)?legacyConfig():defaultConfig();
+  const D=defaultConfig(),c=d.config;
+  c.couleurs={...D.couleurs,...(c.couleurs||{})};c.types=c.types||{};
+  TYPE_KEYS.forEach(k=>c.types[k]={...D.types[k],...(c.types[k]||{})});
+  c.metriques=c.metriques||D.metriques;
+  if(!Array.isArray(c.ordre)||c.ordre.length!==TYPE_KEYS.length||!TYPE_KEYS.every(k=>c.ordre.includes(k)))c.ordre=[...DEF_ORDER];['nom','outil','sousTitre'].forEach(k=>{if(c[k]==null)c[k]=D[k]});
+  delete d.prefs.aisOrdre;delete d.prefs.kpiStyle;
+  d.actions.forEach((a,i)=>{if(!a.id)a.id=i+1});
+  if(!d.id)d.id=(crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2));
+  if(d.config.sousTitre==="C'est en coachant délibérément et beaucoup qu'on devient un excellent coach")d.config.sousTitre="C'est en coachant beaucoup et en pratiquant délibérément qu'on devient un excellent coach";
+  d.version_schema=VERSION;return d;
+}
+
+/* ---------- application de la configuration ---------- */
+function applyConfig(){const C=CFG(),K=C.couleurs,r=document.documentElement.style;
+  STACK=C.ordre;T=TYPE_KEYS.map(k=>({k,...TYPE_ROLE[k],...C.types[k]}));TM=Object.fromEntries(T.map(t=>[t.k,t]));PAL=STACK.map(k=>TM[k].c);
+  r.setProperty('--am',K.accent);r.setProperty('--jet',K.fonce);r.setProperty('--gw',K.fond);r.setProperty('--grey',K.gris);r.setProperty('--afb',K.bleu);
+  r.setProperty('--bluebg',mix(K.bleu,'#ffffff',.85));
+  const title=[C.nom,C.outil].filter(Boolean).join(' - ');$('appTitle').textContent=title;document.title=title;$('appSub').textContent=C.sousTitre||'';$('footName').textContent=C.nom||'';
+  const ini=(C.nom||'?').split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  $('logoBox').innerHTML=C.logo?`<img class="logo" src="${C.logo}" alt="">`:`<div class="logo ini">${esc(ini)}</div>`;
+  $('side').style.backgroundImage=C.bandeau?`url("${C.bandeau}")`:`linear-gradient(180deg,${mix(K.fonce,K.bleu,.45)} 0%,${K.fonce} 100%)`;
+  $('lg').innerHTML=STACK.map(k=>TM[k]).map(t=>`<span><i style="background:${t.c}"></i>${esc(t.l)}</span>`).join('');
+}
+
+/* ---------- stockage navigateur (IndexedDB) ---------- */
+const idb={db:null,
+ open(){return new Promise((res,rej)=>{const r=indexedDB.open('aocoach',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>{this.db=r.result;res()};r.onerror=()=>rej(r.error)})},
+ get(k){return new Promise(res=>{try{const r=this.db.transaction('kv').objectStore('kv').get(k);r.onsuccess=()=>res(r.result);r.onerror=()=>res(undefined)}catch(e){res(undefined)}})},
+ set(k,v){return new Promise(res=>{try{const t=this.db.transaction('kv','readwrite');t.objectStore('kv').put(v,k);t.oncomplete=()=>res(true);t.onerror=()=>res(false)}catch(e){res(false)}})}};
+
+/* =========================================================
+   CHIFFREMENT (Web Crypto, natif du navigateur)
+   - une clé de données aléatoire (AES-256-GCM) chiffre tout le carnet ;
+   - cette clé est elle-même chiffrée deux fois : par le mot de passe et par la clé de secours
+     (dérivation PBKDF2-SHA256), ce qui permet de changer de mot de passe sans tout rechiffrer.
+   ========================================================= */
+const FMT='suivi-coaching-chiffre',ALGO='AES-256-GCM, clé dérivée PBKDF2-SHA256',IT_PWD=600000,IT_REC=200000;
+const enc=new TextEncoder(),dec=new TextDecoder();
+let DEK=null,DEKK=null,ENV=null;          // clé de données (en mémoire uniquement tant que le carnet est ouvert)
+const isEnc=o=>o&&o.format===FMT;
+function toB64(buf){let s='';const u=new Uint8Array(buf);for(let i=0;i<u.length;i+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000));return btoa(s)}
+function fromB64(s){const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u}
+async function kek(secret,salt,iter){const base=await crypto.subtle.importKey('raw',enc.encode(secret),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
+async function aesEnc(key,data){const iv=crypto.getRandomValues(new Uint8Array(12));return{iv:toB64(iv),ct:toB64(await crypto.subtle.encrypt({name:'AES-GCM',iv},key,data))}}
+async function aesDec(key,o){return new Uint8Array(await crypto.subtle.decrypt({name:'AES-GCM',iv:fromB64(o.iv)},key,fromB64(o.ct)))}
+async function setDEK(raw){DEK=raw;DEKK=raw?await crypto.subtle.importKey('raw',raw,'AES-GCM',false,['encrypt','decrypt']):null}
+async function wrapWith(secret,iter){const salt=crypto.getRandomValues(new Uint8Array(16));return{salt:toB64(salt),iter,...await aesEnc(await kek(secret,salt,iter),DEK)}}
+async function unwrap(secret,w){return aesDec(await kek(secret,fromB64(w.salt),w.iter),w)}
+const normRec=s=>s.toUpperCase().replace(/[^A-Z2-7]/g,'');
+function newRecoveryKey(){const A='ABCDEFGHIJKLMNOPQRSTUVWXYZ234567',b=crypto.getRandomValues(new Uint8Array(24));let s='';b.forEach(x=>s+=A[x&31]);return s.match(/.{4}/g).join('-')}
+async function sealObj(obj){return{format:FMT,id:obj.id,version_schema:obj.version_schema,enregistre_le:obj.enregistre_le||'',algo:ALGO,cles:ENV.cles,donnees:await aesEnc(DEKK,enc.encode(JSON.stringify(obj)))}}
+/* ouvre une enveloppe ; adopt=true : la clé devient celle de la session */
+async function openEnv(env,secret,which,adopt){
+  const raw=await unwrap(which=='secours'?normRec(secret):secret,env.cles[which]);
+  const k=await crypto.subtle.importKey('raw',raw,'AES-GCM',false,['decrypt']);
+  const plain=JSON.parse(dec.decode(await aesDec(k,env.donnees)));
+  if(adopt){await setDEK(raw);ENV={cles:env.cles}}
+  return plain}
+async function tryCurrentKey(env){if(!DEKK)return null;try{return JSON.parse(dec.decode(await aesDec(DEKK,env.donnees)))}catch(e){return null}}
+
+/* ---------- fenêtres de saisie de secret ---------- */
+function askSecret({title,text,allowRec=true,cancelable=false,other=false,verify}){return new Promise(res=>{
+  $('lkOther').classList.toggle('hide',!other);$('lkOther').onclick=()=>{$('lock').classList.add('hide');showWelcome(true)};
+  let which='mdp';const L=$('lock'),P=$('lkPwd');
+  const setMode=w=>{which=w;P.value='';$('lkErr').textContent='';P.type=w=='mdp'?'password':'text';
+    P.placeholder=w=='mdp'?'Mot de passe':'Clé de secours (XXXX-XXXX-…)';$('lkRec').textContent=w=='mdp'?"J'ai oublié mon mot de passe : utiliser la clé de secours":'Revenir au mot de passe';setTimeout(()=>P.focus(),50)};
+  $('lkTitle').textContent=title;$('lkTxt').textContent=text;$('lkRec').classList.toggle('hide',!allowRec);$('lkCancel').classList.toggle('hide',!cancelable);
+  L.classList.toggle('dim',cancelable);L.classList.remove('hide');setMode('mdp');
+  const go=async()=>{if(!P.value)return;$('lkGo').disabled=true;$('lkGo').textContent='Vérification…';
+    try{const r=await verify(P.value,which);L.classList.add('hide');res({r,which})}catch(e){$('lkErr').textContent=which=='mdp'?'Mot de passe incorrect.':'Clé de secours incorrecte.';P.select()}
+    $('lkGo').disabled=false;$('lkGo').textContent='Valider'};
+  $('lkGo').textContent=cancelable?'Valider':'Déverrouiller';
+  $('lkGo').onclick=go;P.onkeydown=e=>{if(e.key=='Enter')go()};
+  $('lkRec').onclick=()=>setMode(which=='mdp'?'secours':'mdp');
+  $('lkCancel').onclick=()=>{L.classList.add('hide');res(null)};
+})}
+function askNewPassword(title){return new Promise(res=>{const M=$('pwdM');$('pwTitle').textContent=title;$('pw1').value=$('pw2').value='';$('pwErr').textContent='';M.classList.remove('hide');setTimeout(()=>$('pw1').focus(),50);
+  $('pwOk').onclick=()=>{const a=$('pw1').value,b=$('pw2').value;if(a.length<10){$('pwErr').textContent='Au moins 10 caractères.';return}if(a!==b){$('pwErr').textContent='Les deux saisies sont différentes.';return}M.classList.add('hide');res(a)};
+  $('pw2').onkeydown=e=>{if(e.key=='Enter')$('pwOk').click()};
+  $('pwCancel').onclick=()=>{M.classList.add('hide');res(null)}})}
+function showRecoveryKey(key){return new Promise(res=>{$('recKey').textContent=key;$('recOk').checked=false;$('recClose').disabled=true;$('recClose').style.opacity=.5;$('recM').classList.remove('hide');
+  $('recOk').onchange=()=>{$('recClose').disabled=!$('recOk').checked;$('recClose').style.opacity=$('recOk').checked?1:.5};
+  $('recCopy').onclick=()=>{navigator.clipboard?.writeText(key);toast('Clé copiée')};
+  $('recDl').onclick=()=>download(`cle-de-secours_${(CFG().nom||'carnet').replace(/\W+/g,'-')}_${today()}.txt`,`Clé de secours du carnet « ${CFG().nom} »\nCréée le ${today()}\n\n${key}\n\nElle permet de rouvrir coaching-data.json si le mot de passe est oublié.\nÀ conserver hors de l'ordinateur.`,'text/plain');
+  $('recClose').onclick=()=>{$('recM').classList.add('hide');res()}})}
+
+/* ---------- actions de sécurité ---------- */
+async function enableEncryption(){
+  const pwd=await askNewPassword('Activer le chiffrement');if(!pwd)return;
+  toast('Chiffrement en cours…');await setDEK(crypto.getRandomValues(new Uint8Array(32)));
+  const key=newRecoveryKey();ENV={cles:{mdp:await wrapWith(pwd,IT_PWD),secours:await wrapWith(normRec(key),IT_REC)}};
+  DB.prefs.autolock=DB.prefs.autolock??15;touch();clearTimeout(saveT);await persist();
+  const n=await encryptOldBackups();renderSettings();updLockBtn();
+  await showRecoveryKey(key);toast(`Chiffrement activé${n?` · ${n} sauvegarde(s) chiffrée(s)`:''}`)}
+async function changePassword(){
+  const ok=await askSecret({title:'Mot de passe actuel',text:'Confirme ton mot de passe actuel.',allowRec:false,cancelable:true,verify:s=>unwrap(s,ENV.cles.mdp)});if(!ok)return;
+  const pwd=await askNewPassword('Nouveau mot de passe');if(!pwd)return;
+  ENV.cles.mdp=await wrapWith(pwd,IT_PWD);touch();toast('Mot de passe changé')}
+async function newRecovery(){
+  const ok=await askSecret({title:'Nouvelle clé de secours',text:'Confirme ton mot de passe. L\'ancienne clé de secours ne fonctionnera plus pour le fichier courant.',allowRec:false,cancelable:true,verify:s=>unwrap(s,ENV.cles.mdp)});if(!ok)return;
+  const key=newRecoveryKey();ENV.cles.secours=await wrapWith(normRec(key),IT_REC);touch();await showRecoveryKey(key)}
+async function disableEncryption(){
+  const ok=await askSecret({title:'Désactiver le chiffrement',text:'Ton fichier redeviendra lisible en clair. Les sauvegardes déjà chiffrées le restent. Confirme ton mot de passe.',allowRec:false,cancelable:true,verify:s=>unwrap(s,ENV.cles.mdp)});if(!ok)return;
+  await setDEK(null);ENV=null;touch();renderSettings();updLockBtn();toast('Chiffrement désactivé')}
+async function lock(){if(!DEKK||!DB)return;clearTimeout(saveT);await persist();closeM();closeWizard();DB=null;await setDEK(null);ENV=null;$('main').style.visibility='hidden';boot()}
+function updLockBtn(){$('lockBtn').classList.toggle('hide',!DEKK)}
+$('lockBtn').onclick=lock;
+let lastAct=Date.now();['mousemove','keydown','click','scroll','touchstart'].forEach(ev=>document.addEventListener(ev,()=>{lastAct=Date.now()},{passive:true}));
+setInterval(()=>{const m=DB?.prefs?.autolock??15;if(DEKK&&DB&&m&&Date.now()-lastAct>m*60000)lock()},20000);
+
+/* =========================================================
+   STOCKAGE : serveur local (lanceur) ou dossier (Chrome/Edge), + copie navigateur
+   ========================================================= */
+let NEEDPERM=false;
+const FS_OK=!!window.showDirectoryPicker;
+const BKRE=/^coaching-data_\d{4}-\d{2}-\d{2}\.json$/;
+async function writeFile(dir,name,text){const fh=await dir.getFileHandle(name,{create:true});const w=await fh.createWritable();await w.write(text);await w.close()}
+async function readFile(dir,name){try{const fh=await dir.getFileHandle(name);return await (await fh.getFile()).text()}catch(e){return null}}
+async function dailyBackup(txt){
+  if(!DIR)return;const b=await DIR.getDirectoryHandle(BKDIR,{create:true}),name=`coaching-data_${today()}.json`;
+  try{await b.getFileHandle(name);return}catch(e){}
+  await writeFile(b,name,txt);
+  const names=[];for await(const [n] of b.entries())if(BKRE.test(n))names.push(n);
+  names.sort();for(const n of names.slice(0,-KEEP))await b.removeEntry(n)}
+async function listBackups(){
+  if(DIR&&!NEEDPERM){const b=await DIR.getDirectoryHandle(BKDIR,{create:true}),n=[];for await(const [k] of b.entries())if(BKRE.test(k))n.push(k);return n}return[]}
+async function readBackup(n){return readFile(await DIR.getDirectoryHandle(BKDIR),n)}
+async function writeBackup(n,txt){await writeFile(await DIR.getDirectoryHandle(BKDIR),n,txt)}
+async function encryptOldBackups(){let k=0;try{for(const n of await listBackups()){try{const t=await readBackup(n);if(!t)continue;const o=JSON.parse(t);if(isEnc(o))continue;
+  await writeBackup(n,JSON.stringify(await sealObj(o),null,1));k++}catch(e){}}}catch(e){}return k}
+
+async function payload(){return DEKK?await sealObj(DB):DB}
+function touch(){if(!DB)return;DB.enregistre_le=new Date().toISOString();setStatus('busy');clearTimeout(saveT);saveT=setTimeout(persist,400)}
+async function persist(){if(!DB)return;
+  const obj=await payload(),txt=JSON.stringify(obj,null,1);await idb.set('data',obj);
+  if(DIR&&!NEEDPERM){try{await writeFile(DIR,FILE,txt);await dailyBackup(txt);setStatus('ok')}catch(e){setStatus('err','Écriture du fichier impossible');NEEDPERM=true;banner('reconnect')}}
+  else setStatus('local')}
+window.addEventListener('beforeunload',e=>{if($('status').classList.contains('busy')){e.preventDefault();e.returnValue=''}});
+
+const sameBook=(a,b)=>(a?.id||null)===(b?.id||null);
+/* Relier un dossier. Si ce dossier contient un AUTRE carnet, on l'ouvre sans jamais écraser son fichier. */
+async function connectDir(useExisting){
+  if(useExisting){try{if(await DIR.requestPermission({mode:'readwrite'})!=='granted')return}catch(e){return}NEEDPERM=false;if(DB){clearTimeout(saveT);await persist()}return boot()}
+  const prevDir=await idb.get('dir');let nd;try{nd=await window.showDirectoryPicker({id:'aocoach',mode:'readwrite'})}catch(e){return}
+  const t=await readFile(nd,FILE);let f=null;if(t){try{f=JSON.parse(t)}catch(e){toast(`${FILE} est illisible dans ce dossier`);return}}
+  if(!f&&!DB){toast(`Aucun carnet (${FILE}) dans ce dossier`);return}
+  const cur=DB||await idb.get('data');let other=f&&cur&&!sameBook(f,cur);
+  if(other&&!prevDir&&!confirm(`Ce dossier contient un autre carnet.\nTon carnet actuel n'est enregistré que dans ce navigateur : il sera remplacé. Exporte-le d'abord (Exporter JSON) si tu veux le garder.\n\nOuvrir le carnet de ce dossier ?`))return;
+  if(DB&&!other){clearTimeout(saveT);await persist()}
+  DIR=nd;NEEDPERM=false;await idb.set('dir',nd);
+  if(other){await idb.set('data',null);DB=null;await setDEK(null);ENV=null;toast(`Carnet du dossier « ${nd.name} » ouvert`)}
+  boot()}
+async function startFresh(){const c=await idb.get('data'),d=await idb.get('dir');
+  if(c&&!d&&!confirm("Le carnet actuel n'est enregistré que dans ce navigateur et sera remplacé par un nouveau carnet. Exporte-le d'abord (Exporter JSON) si tu veux le garder.\n\nContinuer ?"))return false;
+  if(DB){clearTimeout(saveT);await persist()}
+  DIR=null;NEEDPERM=false;await idb.set('dir',null);await setDEK(null);ENV=null;DB=migrate(null);touch();await afterLoad();return true}
+
+function setStatus(s,msg){const el=$('status');el.className='status '+(s=='ok'?'':s);
+  const h=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),lockTxt=DEKK?' · chiffré':'';
+  el.lastChild.textContent={ok:`Enregistré dans ${FILE}${lockTxt} · ${h}`,busy:'Enregistrement…',local:`Enregistré dans ce navigateur seulement${lockTxt} · ${h}`,err:msg||'Erreur'}[s];
+  $('footInfo').textContent=DIR?`Dossier : ${DIR.name} · ${FILE} · copie datée quotidienne dans /${BKDIR} (${KEEP} jours)`:'Aucun dossier relié';
+}
+function banner(kind){const b=$('banner');if(!kind){b.classList.add('hide');return}
+  const M={nodir:['Tes saisies sont gardées dans ce navigateur uniquement. Choisis un dossier (idéalement synchronisé, OneDrive ou Drive) pour les enregistrer dans un fichier.','Choisir le dossier',()=>connectDir(false)],
+   reconnect:['Le navigateur demande ton autorisation pour accéder au dossier de données. Choisis « Autoriser à chaque visite » pour ne plus avoir à le refaire.','Reconnecter le dossier',()=>connectDir(true)],
+   nofs:['Ce navigateur ne sait pas enregistrer dans un fichier : utilise Chrome ou Edge sur ordinateur. En attendant, tes saisies sont gardées dans le navigateur ; exporte régulièrement.','Exporter JSON',exportJson]}[kind];
+  $('bannerTxt').textContent=M[0];$('bannerBtn').textContent=M[1];$('bannerBtn').onclick=M[2];b.classList.remove('hide')}
+
+/* ---------- export / import ---------- */
+function download(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
+async function exportJson(){download(`coaching-data_export_${today()}.json`,JSON.stringify(await payload(),null,1),'application/json');if(DEKK)toast('Export chiffré avec ton mot de passe actuel')}
+function exportCsv(){if(DEKK&&!confirm('L\'export CSV est lisible en clair (noms, commentaires). Continuer ?'))return;
+  const q=v=>`"${String(v??'').replace(/"/g,'""')}"`,M=metrics();
+  const head=['Date','Type','Personne','Durée (min)','Durée (h)','Commentaire',...M.map(m=>m.l+(m.actif?'':' (archivée)')),'CR','Synthèse','Montant €','Engagement (mois)','Statut proposition'];
+  const L=[...E()].sort((a,b)=>a.date.localeCompare(b.date)).map(e=>[e.date,TM[e.type]?.l,pname(e.pid),e.dur,String(e.dur/60).replace('.',','),e.com,...M.map(m=>e.ais?.[m.id]??''),e.cr?'oui':'',e.syn?'oui':'',e.eur??'',e.engagement_mois??'',e.statut?STAT[e.statut]:'']);
+  download(`coaching-saisies_${today()}.csv`,'﻿'+[head,...L].map(r=>r.map(q).join(';')).join('\r\n'),'text/csv')}
+$('expJson').onclick=exportJson;$('expCsv').onclick=exportCsv;
+$('impJson').onclick=()=>$('impFile').click();
+$('impFile').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;let d;
+  try{d=JSON.parse(await f.text())}catch(err){toast('Fichier JSON non reconnu');return}
+  if(!DB){const c=await idb.get('data'),dd=await idb.get('dir');if(c&&!dd&&!confirm("Le carnet actuel n'est enregistré que dans ce navigateur et sera remplacé. Continuer ?"))return;DIR=null;await idb.set('dir',null);await setDEK(null);ENV=null}
+  if(isEnc(d)){const r=await askSecret({title:'Fichier chiffré',text:'Saisis le mot de passe de ce fichier, ou sa clé de secours.',cancelable:true,verify:(s,w)=>openEnv(d,s,w,!DEKK&&!DB)});if(!r)return;d=r.r}
+  if(!d.entrees){toast('Fichier JSON non reconnu');return}
+  if(DB&&E().length&&!confirm(`Remplacer les données actuelles (${E().length} saisies) par celles du fichier (${d.entrees.length} saisies) ?\nUne sauvegarde datée existe dans /${BKDIR}.`))return;
+  const first=!DB;DB=migrate(d);closeWizard();touch();await afterLoad();if(first&&!d.entrees.length){openWizard(2,true);toast('Modèle importé : ajuste-le à ta pratique')}else toast('Données importées')};
+$('chDir').onclick=()=>FS_OK?connectDir(false):toast('Utilise Chrome ou Edge pour relier un dossier');
+$('expModel').onclick=()=>{const c=JSON.parse(JSON.stringify(CFG()));c.nom='Mon cabinet';c.logo=null;c.bandeau=null;
+  download(`modele-suivi-coaching_${today()}.json`,JSON.stringify({version_schema:VERSION,enregistre_le:'',config:c,personnes:[],entrees:[],objectifs:{},priorites:[],actions:[],prefs:{}},null,1),'application/json')};
+
+/* ---------- calculs ---------- */
+const H=a=>a.reduce((s,e)=>s+(e.dur||0),0)/60;
+function stats(list){const c=t=>list.filter(e=>t.includes(e.type)),P=c(['proposition']),A=P.filter(e=>e.statut=='acceptee');return{
+ h:H(c(COACH)),conv:c(['conversation']).length,convH:H(c(['conversation'])),
+ coach:new Set(c(COACH).filter(e=>e.pid!=null).map(e=>e.pid)).size,
+ delib:H(c(['debrief','supervision'])),prop:P.reduce((s,e)=>s+(+e.eur||0),0),nprop:P.length,
+ ca:A.reduce((s,e)=>s+(+e.eur||0),0),mois:A.reduce((s,e)=>s+(+e.engagement_mois||0),0)}}
+const range=(a,b)=>E().filter(e=>e.date>=a&&e.date<=b);
+const yearData=y=>E().filter(e=>e.date.startsWith(y));
+const years=()=>{const s=new Set(E().map(e=>e.date.slice(0,4)));s.add(today().slice(0,4));return[...s].sort()};
+
+function toast(m,label,fn){const t=$('toast');t.innerHTML=`<span>${esc(m)}</span>${label?`<button>${label}</button>`:''}`;if(label)t.querySelector('button').onclick=()=>{fn();t.classList.remove('show')};
+  t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),label?5000:2200)}
+
+/* ---------- KPI ---------- */
+function spark(vals){if(vals.length<2)vals=[0,...vals];const mx=Math.max(...vals,1);return `<svg width="96" height="34"><polyline fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2" stroke-linejoin="round" points="${vals.map((v,i)=>`${i*(96/(vals.length-1))},${32-v/mx*28}`).join(' ')}"/></svg>`}
+function kpiBg(i){const K=CFG().couleurs,base=mix(K.fonce,K.bleu,[0,.12,.24][i]),end=mix(base,K.bleu,.32);
+  return `linear-gradient(150deg,${base} 0%,${base} 38%,${end} 100%)`}
+function bigKPI(el){const Y=today().slice(0,4),s=stats(yearData(Y)),r=stats(range(addDays(today(),-30),today())),cm=+today().slice(5,7);
+ const per=k=>Array.from({length:cm},(_,i)=>stats(yearData(Y+'-'+pad(i+1)))[k]);
+ $(el).innerHTML=[['Heures de coaching '+Y,n1(s.h),'h',`31 derniers jours : <b>${n1(r.h)} h</b>`,'h'],
+  ['Conversations '+Y,s.conv,'',`31 derniers jours : <b>${r.conv}</b> · ${n1(r.convH)} h`,'conv'],
+  ['Personnes coachées '+Y,s.coach,'',`31 derniers jours : <b>${r.coach}</b>`,'coach']]
+  .map(([l,v,u,d,k],i)=>`<div class="kpi" style="background:${kpiBg(i)}"><div class="l">${l}</div><div class="v">${v}<small>${u?' '+u:''}</small></div><div class="d">${d}</div>${spark(per(k))}</div>`).join('')}
+function smallKPI(){const Y=today().slice(0,4),s=stats(yearData(Y)),r=stats(range(addDays(today(),-30),today()));
+ $('kpis2').innerHTML=[[n1(s.delib)+' h','pratique délibérée',`31 j : ${n1(r.delib)} h · ratio ${s.h?n1(s.delib/s.h):'—'} h par h de coaching`],
+  [eur(s.prop),'proposés',`31 j : ${eur(r.prop)} · ${s.nprop} proposition${s.nprop>1?'s':''}`],
+  [eur(s.ca),'CA accepté',`31 j : ${eur(r.ca)} · ${s.mois} mois engagés`]]
+  .map(([v,l,d])=>`<div class="k2"><span class="v">${v}</span><span class="l">${l}</span><div class="d">${d}</div></div>`).join('')}
+
+/* ---------- temps passé par mois ---------- */
+let YSEL=null;
+function renderYears(){const ys=years();if(!YSEL||!ys.includes(YSEL))YSEL=today().slice(0,4);
+ $('yChips').innerHTML=ys.map(y=>`<button class="chip ${y==YSEL?'on':''}" data-y="${y}">${y}</button>`).join('');
+ $('yChips').querySelectorAll('.chip').forEach(b=>b.onclick=()=>{YSEL=b.dataset.y;renderAll()})}
+function renderMonthly(){const y=YSEL,W=720,Hh=250,l=36,b=26,top=14,cur=today();
+ const ST=STACK.map(k=>TM[k]),M=MO.map((_,i)=>ST.map(t=>H(E().filter(e=>e.type==t.k&&e.date.startsWith(y+'-'+pad(i+1))))));
+ const tot=M.map(r=>r.reduce((a,b)=>a+b,0)),mx=Math.max(...tot),stepv=mx>60?20:mx>20?10:mx>8?4:2,max=Math.max(4,Math.ceil(mx/stepv)*stepv),bw=36,step=(W-l-10)/12;let g='';
+ for(let v=0;v<=max;v+=stepv){const yy=Hh-b-(v/max)*(Hh-b-top);g+=`<line x1="${l}" x2="${W-6}" y1="${yy}" y2="${yy}" stroke="#EEE"/><text x="${l-8}" y="${yy+4}" text-anchor="end">${v}h</text>`}
+ M.forEach((row,i)=>{const x=l+i*step+(step-bw)/2;let yy=Hh-b;const isCur=y==cur.slice(0,4)&&i==+cur.slice(5,7)-1;
+  g+=`<text x="${x+bw/2}" y="${Hh-8}" text-anchor="middle" style="${isCur?'fill:var(--jet);font-weight:800':''}">${MO[i]}</text>`;
+  if(!tot[i]){g+=`<rect x="${x}" y="${Hh-b-4}" width="${bw}" height="4" rx="2" fill="#EEE"/>`;return}
+  row.forEach((v,j)=>{if(!v)return;const h=v/max*(Hh-b-top);yy-=h;g+=`<rect x="${x}" y="${yy}" width="${bw}" height="${Math.max(h-1.5,1)}" rx="2" fill="${ST[j].c}"><title>${MO[i]} · ${esc(ST[j].l)} : ${n1(v)} h</title></rect>`});
+  g+=`<text x="${x+bw/2}" y="${yy-5}" text-anchor="middle" style="fill:var(--jet);font-weight:700">${n1(tot[i])}</text>`});
+ $('monthly').innerHTML=g}
+
+/* ---------- aisance dans le temps ---------- */
+let EVIEW='met',EMET=null,EHIDE=new Set(),dragM=null;
+const posColor=(i,n)=>PAL[n<=1?0:Math.round(i*(PAL.length-1)/(n-1))];   // gauche → droite : rouge … gris
+function renderEase(){const y=YSEL,W=720,Hh=250,l=36,b=26,top=14,step=(W-l-10)/12;
+ $('easeView').innerHTML=`<button data-v="met" class="${EVIEW=='met'?'on':''}">Toutes les métriques</button><button data-v="type" class="${EVIEW=='type'?'on':''}">Une métrique par type</button>`;
+ $('easeView').querySelectorAll('button').forEach(b=>b.onclick=()=>{EVIEW=b.dataset.v;EHIDE.clear();renderEase()});
+ const pts=E().filter(e=>e.date.startsWith(y)&&hasAis(e));
+ if(!EMET||!metrics().some(m=>m.id==EMET))EMET=(mActive()[0]||metrics()[0])?.id;
+ let series=[],drag=false;
+ if(EVIEW=='met'){
+  $('easeMet').classList.add('hide');drag=true;
+  const list=metrics().filter(m=>m.actif||pts.some(e=>e.ais[m.id]));
+  series=list.map((m,i)=>({key:m.id,label:m.l+(m.actif?'':' (archivée)'),color:posColor(i,list.length),pts:pts.filter(e=>e.ais[m.id]).map(e=>({e,v:e.ais[m.id]}))}));
+ }else{
+  $('easeMet').classList.remove('hide');
+  $('easeMet').innerHTML=`<select class="sel" id="emSel">${metrics().map(m=>`<option value="${m.id}" ${m.id==EMET?'selected':''}>${esc(m.l)}${m.actif?'':' (archivée)'}</option>`).join('')}</select>`;
+  $('emSel').onchange=e=>{EMET=e.target.value;EHIDE.clear();renderEase()};
+  series=STACK.map(k=>TM[k]).filter(t=>t.ais||pts.some(e=>e.type==t.k&&e.ais[EMET])).map(t=>({key:t.k,label:t.l,color:t.c,pts:pts.filter(e=>e.type==t.k&&e.ais[EMET]).map(e=>({e,v:e.ais[EMET]}))}));
+ }
+ $('easeLg').innerHTML=series.map(s=>`<span class="${drag?'drg':''} ${EHIDE.has(s.key)?'off':''}" ${drag?'draggable="true"':''} data-k="${s.key}" title="Cliquer pour masquer / afficher${drag?' · glisser pour réordonner':''}"><i style="background:${s.color}"></i>${esc(s.label)}</span>`).join('');
+ $('easeLg').querySelectorAll('span').forEach(sp=>{const k=sp.dataset.k;
+  sp.onclick=()=>{EHIDE.has(k)?EHIDE.delete(k):EHIDE.add(k);renderEase()};
+  if(!drag)return;
+  sp.ondragstart=()=>{dragM=k;sp.classList.add('drag')};sp.ondragend=()=>sp.classList.remove('drag');
+  sp.ondragover=e=>{e.preventDefault();sp.classList.add('over')};sp.ondragleave=()=>sp.classList.remove('over');
+  sp.ondrop=e=>{e.preventDefault();const M=metrics(),from=M.findIndex(m=>m.id==dragM),to=M.findIndex(m=>m.id==k);if(from<0||to<0||from==to)return;const [x]=M.splice(from,1);M.splice(to,0,x);touch();renderEase()}});
+ const sy=v=>Hh-b-(v-1)/4*(Hh-b-top),bx=i=>l+i*step;let g='';
+ [1,2,3,4,5].forEach(v=>g+=`<line x1="${l}" x2="${W-6}" y1="${sy(v)}" y2="${sy(v)}" stroke="#EEE"/><text x="${l-8}" y="${sy(v)+4}" text-anchor="end">${v}</text>`);
+ if(EVIEW=='type'){const m=metrics().find(x=>x.id==EMET);if(m){g+=`<text x="${W-8}" y="${sy(5)-4}" text-anchor="end" style="font-style:italic">${esc(m.max||'')}</text><text x="${W-8}" y="${sy(1)-4}" text-anchor="end" style="font-style:italic">${esc(m.min||'')}</text>`}}
+ MO.forEach((mo,i)=>g+=`<text x="${bx(i)+step/2}" y="${Hh-8}" text-anchor="middle">${mo}</text>`);
+ const vis=series.filter(s=>!EHIDE.has(s.key)&&s.pts.length);
+ if(!vis.length){g+=`<text x="${W/2}" y="${Hh/2-8}" text-anchor="middle" style="font-size:14px;fill:var(--jet);font-weight:700">Pas encore de notes en ${y}</text><text x="${W/2}" y="${Hh/2+14}" text-anchor="middle" style="font-size:12.5px">Note tes séances à l'enregistrement ou dans « Mes saisies »</text>`;$('ease').innerHTML=g;return}
+ [...vis].reverse().forEach((s,ri)=>{const off=((vis.length-1-ri)-(vis.length-1)/2)*.05;
+  s.pts.forEach(({e,v})=>{const i=+e.date.slice(5,7)-1,x=bx(i)+6+(+e.date.slice(8,10)-1)/31*(step-12);
+   g+=`<circle cx="${x}" cy="${sy(v+off)}" r="3.2" fill="${s.color}" opacity=".35"><title>${dShort(e.date)} · ${esc(pname(e.pid))} · ${esc(s.label)} : ${v}</title></circle>`});
+  const av=MO.map((_,i)=>{const a=s.pts.filter(p=>+p.e.date.slice(5,7)==i+1);return a.length?a.reduce((t,p)=>t+p.v,0)/a.length:null});
+  const P=av.map((v,i)=>v==null?null:[bx(i)+step/2,sy(v)]).filter(Boolean);
+  if(P.length>1)g+=`<polyline fill="none" stroke="${s.color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" points="${P.map(p=>p.join(',')).join(' ')}"/>`;
+  av.forEach((v,i)=>{if(v!=null)g+=`<circle cx="${bx(i)+step/2}" cy="${sy(v)}" r="5" fill="${s.color}" stroke="#fff" stroke-width="2"><title>${MO[i]} · ${esc(s.label)} : moyenne ${n1(v)}</title></circle>`})});
+ $('ease').innerHTML=g}
+
+/* ---------- suivi indicateurs ---------- */
+const OROWS=[{k:'h',l:'Heures de coaching',u:'h'},{k:'conv',l:'Conversations',u:''},{k:'coach',l:'Personnes coachées',u:''},{k:'delib',l:'Pratique délibérée',u:'h'},{k:'ca',l:'CA accepté',u:'€'}];
+const curQ=()=>{const t=today();return t.slice(0,4)+'T'+(Math.floor((+t.slice(5,7)-1)/3)+1)};
+function periods(qk){const y=+qk.slice(0,4),q=+qk.slice(5),s=q<=2?1:2;return[
+ {k:qk,l:'Trimestre',s:`T${q} ${y}`,a:`${y}-${pad(q*3-2)}-01`,b:`${y}-${pad(q*3)}-${[31,30,30,31][q-1]}`},
+ {k:`${y}S${s}`,l:'Semestre',s:`S${s} ${y}`,a:s==1?`${y}-01-01`:`${y}-07-01`,b:s==1?`${y}-06-30`:`${y}-12-31`},
+ {k:`${y}`,l:'Année',s:`${y}`,a:`${y}-01-01`,b:`${y}-12-31`}]}
+let QSEL=null;
+function renderObj(){
+ const ys=years(),cq=curQ();if(!QSEL)QSEL=cq;
+ const opts=[];ys.forEach(y=>[1,2,3,4].forEach(q=>opts.push(`${y}T${q}`)));
+ $('qSel').innerHTML=opts.map(o=>`<option value="${o}" ${o==QSEL?'selected':''}>${o}${o==cq?' (en cours)':''}</option>`).join('');
+ $('qSel').onchange=()=>{QSEL=$('qSel').value;renderObj()};
+ const C=periods(QSEL),t=today(),fv=(r,v)=>r.u=='€'?eur(v):n1(v)+(r.u?' '+r.u:''),O=k=>DB.objectifs[k]||{};
+ let h=`<tr><th></th>${C.map((c,i)=>`<th class="l${i}"><div class="h">${c.l}</div><div class="s">${c.s}${c.a<=t&&t<=c.b?' · en cours':''}</div></th>`).join('')}</tr>`;
+ h+=`<tr><td>Ambition</td>${C.map((c,i)=>`<td class="l${i}"><textarea class="ed" rows="1" data-amb="${c.k}" placeholder="Écrire l'ambition…">${esc(O(c.k).amb)}</textarea></td>`).join('')}</tr>`;
+ OROWS.forEach(r=>{h+=`<tr><td>${r.l}</td>${C.map((c,i)=>{const real=stats(range(c.a,c.b))[r.k],tg=O(c.k)[r.k],p=tg?Math.min(100,real/tg*100):0;
+  return `<td class="l${i}"><input class="ed big" data-k="${r.k}" data-p="${c.k}" value="${tg!=null&&tg!==''?fv(r,tg):''}" placeholder="—"><div class="prog"><span>${fv(r,real)}</span>${tg?`<div class="bar"><b style="width:${p}%"></b></div><span>${Math.round(real/tg*100)} %</span>`:'<span style="flex:1"></span>'}</div></td>`}).join('')}</tr>`});
+ $('obj').innerHTML=h;
+ const fit=ta=>{ta.style.height='auto';ta.style.height=ta.scrollHeight+'px'};
+ $('obj').querySelectorAll('textarea').forEach(ta=>{fit(ta);ta.oninput=()=>{fit(ta);(DB.objectifs[ta.dataset.amb]??={}).amb=ta.value;touch()}});
+ $('obj').querySelectorAll('input[data-k]').forEach(i=>{const o=()=>DB.objectifs[i.dataset.p]??={};
+  i.onfocus=()=>{i.value=o()[i.dataset.k]??'';i.select()};
+  i.onblur=()=>{const raw=i.value.replace(/[\s€h]/g,'').replace(',','.'),v=parseFloat(raw);if(raw==='')delete o()[i.dataset.k];else if(!isNaN(v))o()[i.dataset.k]=v;touch();renderObj()};
+  i.onkeydown=e=>{if(e.key=='Enter')i.blur()}});
+}
+
+/* ---------- objectifs prioritaires ---------- */
+let dragI=null;
+function renderPrio(){const P=DB.priorites;
+ $('prios').innerHTML=P.map((p,i)=>`<li draggable="true" data-i="${i}"><span class="handle" title="Glisser">⋮⋮</span><span class="rank">${i+1}</span>
+ <div><input class="ed t" data-f="o" value="${esc(p.o)}" placeholder="Objet (ex. Développement commercial)"><input class="ed dsc" data-f="d" value="${esc(p.d)}" placeholder="Description"></div>
+ <div><button class="ibtn" data-mv="-1" title="Monter">↑</button><button class="ibtn" data-mv="1" title="Descendre">↓</button><button class="ibtn del" data-del title="Supprimer">✕</button></div></li>`).join('')||'<li class="empty">Aucun objectif prioritaire pour l\'instant.</li>';
+ $('prios').querySelectorAll('li[data-i]').forEach(li=>{const i=+li.dataset.i;
+  li.querySelectorAll('input').forEach(inp=>{inp.onchange=()=>{const old=P[i].o;P[i][inp.dataset.f]=inp.value;if(inp.dataset.f=='o'&&old)DB.actions.forEach(a=>{if(a.p==old)a.p=inp.value});touch();renderActs()}});
+  li.querySelectorAll('[data-mv]').forEach(b=>b.onclick=()=>move(i,i+ +b.dataset.mv));
+  li.querySelector('[data-del]').onclick=()=>{const [x]=P.splice(i,1);touch();renderPrio();renderActs();toast('Objectif prioritaire supprimé','Annuler',()=>{P.splice(i,0,x);touch();renderPrio();renderActs()})};
+  li.ondragstart=()=>{dragI=i;li.classList.add('drag')};li.ondragend=()=>li.classList.remove('drag');
+  li.ondragover=e=>{e.preventDefault();li.classList.add('over')};li.ondragleave=()=>li.classList.remove('over');
+  li.ondrop=e=>{e.preventDefault();move(dragI,i)}})}
+function move(a,b){const P=DB.priorites;if(b<0||b>=P.length||a==b)return;const [x]=P.splice(a,1);P.splice(b,0,x);touch();renderPrio();renderActs()}
+$('addPrio').onclick=()=>{DB.priorites.push({o:'',d:''});touch();renderPrio();$('prios').lastChild.querySelector('input').focus()};
+
+/* ---------- plan d'action ---------- */
+let AF='encours';
+const SL={encours:'En cours',realisee:'Réalisées',annulee:'Annulées'},SS={encours:'En cours',realisee:'Réalisée',annulee:'Annulée'};
+function renderActs(){const A=DB.actions,t=today();
+ $('pills').innerHTML=Object.keys(SL).map(k=>`<button class="pill ${k} ${AF==k?'on':''}" data-f="${k}">${SL[k]}<span>${A.filter(a=>a.s==k).length}</span></button>`).join('');
+ $('pills').querySelectorAll('.pill').forEach(b=>b.onclick=()=>{AF=b.dataset.f;renderActs()});
+ const names=DB.priorites.map(p=>p.o).filter(Boolean);
+ const rows=A.filter(a=>a.s==AF).sort((x,y)=>(x.d||'9').localeCompare(y.d||'9'));
+ $('acts').innerHTML=rows.map(a=>{const custom=!names.includes(a.p),late=a.s=='encours'&&a.d&&a.d<t;
+  return `<tr data-id="${a.id}" class="${a.s=='realisee'?'done':a.s=='annulee'?'cancel':''}">
+  <td><div class="prio-cell"><select class="ed" data-k="psel">${names.map(n=>`<option ${n==a.p?'selected':''}>${esc(n)}</option>`).join('')}<option value="__o" ${custom?'selected':''}>Autre…</option></select>
+   ${custom?`<input class="ed" data-k="p" value="${esc(a.p)}" placeholder="Saisir une valeur" style="font-size:13px;color:var(--am)">`:''}</div></td>
+  <td><input class="ed" data-k="a" value="${esc(a.a)}" placeholder="Décrire l'action"></td>
+  <td class="${late?'late':''}"><input type="date" class="ed" data-k="d" value="${a.d||''}">${late?'<div style="font-size:11px;color:var(--am);font-weight:800;padding-left:7px">En retard</div>':''}</td>
+  <td><input class="ed" data-k="r" value="${esc(a.r)}" placeholder="—"></td>
+  <td><select class="st ${a.s}" data-k="s">${Object.keys(SS).map(k=>`<option value="${k}" ${k==a.s?'selected':''}>${SS[k]}</option>`).join('')}</select></td></tr>`}).join('')||`<tr><td colspan="5" class="empty">Aucune action ${SL[AF].toLowerCase()}.</td></tr>`;
+ $('acts').querySelectorAll('tr[data-id]').forEach(tr=>{const a=A.find(x=>x.id==tr.dataset.id);
+  tr.querySelectorAll('[data-k]').forEach(el=>el.onchange=()=>{const k=el.dataset.k;
+   if(k=='psel'){a.p=el.value=='__o'?'':el.value;touch();renderActs();if(el.value=='__o')$('acts').querySelector(`tr[data-id="${a.id}"] [data-k=p]`)?.focus();return}
+   a[k]=el.value;touch();
+   if(k=='s'){tr.className=a.s=='realisee'?'done':a.s=='annulee'?'cancel':'';el.className='st '+a.s;
+    toast(a.s=='realisee'?'Action réalisée ✓':a.s=='annulee'?'Action annulée':'Action remise en cours');
+    setTimeout(()=>{tr.classList.add('fade');setTimeout(renderActs,450)},700)}
+   else if(k=='d')renderActs()})})}
+$('addAct').onclick=()=>{DB.actions.push({id:nextId(DB.actions),p:DB.priorites[0]?.o||'',a:'',d:'',r:'',s:'encours'});AF='encours';touch();renderActs();
+ $('acts').querySelector(`tr[data-id="${DB.actions.at(-1).id}"] [data-k=a]`)?.focus()};
+
+/* ---------- mes saisies ---------- */
+const F={y:new Set(),t:new Set(),p:new Set()};
+function filtered(ignore){return E().filter(e=>(ignore=='y'||!F.y.size||F.y.has(e.date.slice(0,4)))&&(ignore=='t'||!F.t.size||F.t.has(e.type))&&(ignore=='p'||!F.p.size||F.p.has(e.pid)))}
+function chipRow(el,items,set,cls){$(el).innerHTML=items.map((it,i)=>`<button class="chip ${cls||''} ${set.has(it.v)?'on':''}" data-i="${i}" style="${it.c?'--c:'+it.c:''}">${it.c?'<i></i>':''}${esc(it.l)} <small>${it.n}</small></button>`).join('')+(set.size?`<button class="reset" data-r>Tout</button>`:'');
+ $(el).querySelectorAll('.chip').forEach(b=>b.onclick=()=>{const v=items[b.dataset.i].v;set.has(v)?set.delete(v):set.add(v);renderList()});
+ const r=$(el).querySelector('[data-r]');if(r)r.onclick=()=>{set.clear();renderList()}}
+function renderList(){
+ const cY=filtered('y'),cT=filtered('t'),cP=filtered('p');
+ chipRow('fY',years().map(y=>({v:y,l:y,n:cY.filter(e=>e.date.startsWith(y)).length})),F.y);
+ chipRow('fT',T.map(t=>({v:t.k,l:t.l,c:t.c,n:cT.filter(e=>e.type==t.k).length})),F.t,'type');
+ const pc=DB.personnes.map(p=>({v:p.id,l:p.nom,n:cP.filter(e=>e.pid==p.id).length})).filter(x=>x.n||F.p.has(x.v)).sort((a,b)=>b.n-a.n||byName(a.l,b.l));
+ chipRow('fP',pc,F.p);
+ const L=filtered(),s=stats(L),f2f=L.filter(e=>TM[e.type]?.cr);
+ $('sum').innerHTML=[[L.length,'saisies'],[n1(H(L))+' h','temps total'],[n1(s.h)+' h','dont coaching'],[n1(s.delib)+' h','pratique délibérée'],[f2f.length?Math.round(f2f.filter(e=>e.cr).length/f2f.length*100)+' %':'—','CR faits'],[f2f.length?Math.round(f2f.filter(e=>e.syn).length/f2f.length*100)+' %':'—','synthèses faites']].map(([v,l])=>`<div><b>${v}</b>${l}</div>`).join('');
+ renderPCards();renderRows(L)}
+function badge(all){const P=all.filter(e=>e.type=='proposition'&&e.statut=='acceptee');
+ if(all.some(e=>e.type=='session'))return P.some(e=>+e.eur>0)?['Client','']:['Pro bono','pb'];
+ if(all.some(e=>e.type=='conversation'))return['Pro bono','pb'];
+ return[all.some(e=>e.type=='supervision')?'Superviseur':'Réseau','ot']}
+function renderPCards(){
+ $('pcards').innerHTML=[...F.p].map(pid=>{const all=E().filter(e=>e.pid==pid).sort((a,b)=>a.date.localeCompare(b.date));if(!all.length)return'';
+  const s=stats(all),ai=all.filter(hasAis),[bl,bc]=badge(all),first=all[0].date,last=all.at(-1).date;
+  const t0=new Date(first).getTime(),t1=Math.max(new Date(today()).getTime(),t0+1),props=all.filter(e=>e.type=='proposition');
+  const ms=metrics().filter(m=>ai.some(e=>e.ais[m.id]));
+  return `<div class="pc"><div class="nm">${esc(pname(pid))}<span class="bd ${bc}">${bl}</span></div>
+  <div class="meta">Depuis le ${dShort(first)} · dernière fois le ${dShort(last)}</div>
+  <div class="nums"><div><b>${all.filter(e=>e.type=='conversation').length}</b>conversations</div><div><b>${all.filter(e=>e.type=='session').length}</b>sessions</div><div><b>${n1(s.h)} h</b>coaching · ${n1(H(all.filter(e=>e.type=='debrief')))} h débrief</div><div><b>${props.some(e=>e.statut=='acceptee')?eur(s.ca):props.length?'en attente':'—'}</b>contrat${s.mois?' · '+s.mois+' mois':''}</div></div>
+  ${ms.length?`<div class="ais">${ms.map(m=>{const a=ai.filter(e=>e.ais[m.id]),v=a.reduce((x,e)=>x+e.ais[m.id],0)/a.length;return `<span>${esc(m.l)}${m.actif?'':' <small style="color:#B5B7BA">(archivée)</small>'}</span><div class="bar"><b style="width:${(v-1)/4*100}%"></b></div><b>${n1(v)}</b>`}).join('')}</div>`:'<div style="font-size:12px;color:var(--grey)">Aisance : pas encore de notes</div>'}
+  <div class="tl">${all.map(e=>`<i title="${dShort(e.date)} · ${esc(TM[e.type]?.l)}" style="left:${(new Date(e.date)-t0)/(t1-t0)*96}%;background:${TM[e.type]?.c}"></i>`).join('')}</div></div>`}).join('')}
+const AC=['#fff','#E8C6CD','#EED8DC','#D3E3EC','#A9C8DA','#7FAAC2'];
+const short=s=>s.length>12?s.slice(0,11)+'.':s;
+function renderRows(L){
+ const MS=$('showArch').checked?metrics():mActive();
+ $('rowsHead').innerHTML=`<tr><th>Date</th><th>Type</th><th>Personne</th><th>Durée</th><th style="width:26%">Ce qu'on a vu</th>${MS.map(m=>`<th class="c ${m.actif?'':'arch'}" title="${esc(m.l)} (1 = ${esc(m.min)}, 5 = ${esc(m.max)})">${esc(short(m.l))}</th>`).join('')}<th class="c">CR</th><th class="c">Synth.</th><th>Contrat</th><th></th></tr>`;
+ L=[...L].sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id);$('cnt').textContent=L.length+' lignes';
+ $('rows').innerHTML=L.map(e=>{const t=TM[e.type]||{l:e.type,c:'#ccc'};return `<tr data-id="${e.id}">
+ <td><input type="date" class="ed" data-k="date" value="${e.date}" style="width:122px"></td>
+ <td class="ty"><i style="background:${t.c}"></i><select class="ed" data-k="type">${T.map(x=>`<option value="${x.k}" ${x.k==e.type?'selected':''}>${esc(x.l)}</option>`).join('')}</select></td>
+ <td>${e.pid!=null?`<span class="plink" data-p="${e.pid}">${esc(pname(e.pid))}</span>`:'<span style="color:#C9CBCE">—</span>'}</td>
+ <td><select class="ed" data-k="dur" style="width:72px">${(DURS.includes(e.dur)?DURS:[e.dur,...DURS]).map(d=>`<option value="${d}" ${d==e.dur?'selected':''}>${fmtD(d)}</option>`).join('')}</select></td>
+ <td><input class="ed" data-k="com" value="${esc(e.com)}" placeholder="—"></td>
+ ${MS.map(m=>{const v=e.ais?.[m.id]||0;return `<td>${t.ais||v?`<select class="as" data-m="${m.id}" title="${esc(m.l)}" style="background:${AC[v]}"><option value="">·</option>${[1,2,3,4,5].map(n=>`<option ${v==n?'selected':''}>${n}</option>`).join('')}</select>`:''}</td>`}).join('')}
+ <td>${t.cr?`<div class="ck ${e.cr?'on':''}" data-c="cr">✓</div>`:''}</td><td>${t.cr?`<div class="ck ${e.syn?'on':''}" data-c="syn">✓</div>`:''}</td>
+ <td>${e.type=='proposition'?`<div class="contrat"><input class="ed" type="number" data-k="eur" value="${e.eur??''}" placeholder="€"><select class="ed" data-k="engagement_mois">${[1,2,3,4,5,6,9,12].map(m=>`<option value="${m}" ${m==e.engagement_mois?'selected':''}>${m} mois</option>`).join('')}</select><select class="ed" data-k="statut" style="font-weight:800;color:${e.statut=='acceptee'?'var(--afb)':e.statut=='refusee'?'var(--red)':'var(--am)'}">${Object.keys(STAT).map(k=>`<option value="${k}" ${k==e.statut?'selected':''}>${STAT[k]}</option>`).join('')}</select></div>`:''}</td>
+ <td><button class="del" title="Supprimer">✕</button></td></tr>`}).join('')||`<tr><td colspan="${10+MS.length}" class="empty">Aucune saisie pour ces filtres.</td></tr>`;
+ $('rows').querySelectorAll('tr[data-id]').forEach(tr=>{const e=E().find(x=>x.id==tr.dataset.id),fl=()=>{touch();tr.classList.add('flash');setTimeout(()=>tr.classList.remove('flash'),60)};
+  tr.querySelectorAll('.ck').forEach(c=>c.onclick=()=>{e[c.dataset.c]=!e[c.dataset.c];c.classList.toggle('on');fl()});
+  tr.querySelectorAll('select.as').forEach(s=>s.onchange=()=>{e.ais=e.ais||{};if(s.value)e.ais[s.dataset.m]=+s.value;else delete e.ais[s.dataset.m];if(!Object.keys(e.ais).length)e.ais=null;s.style.background=AC[+s.value||0];fl()});
+  tr.querySelectorAll('[data-k]').forEach(i=>i.onchange=()=>{const k=i.dataset.k;
+   e[k]=['dur','eur','engagement_mois'].includes(k)?(i.value===''?null:+i.value):i.value;
+   if(k=='type'&&e.type=='proposition'&&!e.statut){e.statut='attente';e.engagement_mois=e.engagement_mois||3}
+   fl();if(['type','date','statut'].includes(k))renderList()});
+  tr.querySelector('.del').onclick=()=>{const idx=E().indexOf(e);E().splice(idx,1);touch();renderList();toast('Saisie supprimée','Annuler',()=>{E().splice(idx,0,e);touch();renderList()})};
+  const p=tr.querySelector('.plink');if(p)p.onclick=()=>{const v=+p.dataset.p;F.p.has(v)?F.p.delete(v):F.p.add(v);renderList();window.scrollTo({top:0,behavior:'smooth'})}})}
+$('showArch').onchange=renderList;
+
+/* ---------- réordonner des lignes par glisser-déposer (poignée) ---------- */
+function dragRows(tbody,arr,onDone){let from=null;
+ tbody.querySelectorAll('tr[data-i]').forEach(tr=>{const h=tr.querySelector('.handle');if(h){h.onmousedown=()=>tr.draggable=true;h.onmouseup=()=>tr.draggable=false}
+  tr.ondragstart=e=>{from=+tr.dataset.i;tr.classList.add('drag');e.dataTransfer.effectAllowed='move';try{e.dataTransfer.setData('text/plain','')}catch(_){}};
+  tr.ondragend=()=>{tr.classList.remove('drag');tr.draggable=false};
+  tr.ondragover=e=>{e.preventDefault();tr.classList.add('over')};tr.ondragleave=()=>tr.classList.remove('over');
+  tr.ondrop=e=>{e.preventDefault();tr.classList.remove('over');const to=+tr.dataset.i;if(from==null||from==to)return;const [x]=arr.splice(from,1);arr.splice(to,0,x);from=null;onDone()}})}
+const recolor=C=>{if(C.couleursAuto)applyStackColors(C)};
+
+/* ---------- paramètres ---------- */
+let IMGT=null;
+function readImg(file,kind){return new Promise((res,rej)=>{const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{
+  let w=im.width,h=im.height,sx=0,sy=0,sw=w,sh=h,c=document.createElement('canvas');
+  if(kind=='logo'){const s=Math.min(w,h);sx=(w-s)/2;sy=(h-s)/2;sw=sh=s;w=h=200}else{const r=Math.min(1,480/w,1400/h);w=Math.round(w*r);h=Math.round(h*r)}
+  c.width=w;c.height=h;c.getContext('2d').drawImage(im,sx,sy,sw,sh,0,0,w,h);res(c.toDataURL(kind=='logo'?'image/png':'image/jpeg',.78))};im.onerror=rej;im.src=fr.result};fr.onerror=rej;fr.readAsDataURL(file)})}
+function cfgChanged(){touch();applyConfig();renderSettings()}
+function renderSecurity(){const on=!!DEKK,al=DB.prefs.autolock??15;
+ $('secBody').innerHTML=on?`<div class="secst on"><i></i>Chiffrement activé</div><div class="hint">Ton fichier, ses sauvegardes et la copie du navigateur sont illisibles sans ton mot de passe ou ta clé de secours (${ALGO}).</div>
+  <div class="field" style="margin-top:12px"><label>Verrouillage auto</label><select class="fin" id="alSel" style="width:auto">${[[0,'Jamais'],[5,'Après 5 min d\'inactivité'],[15,'Après 15 min'],[30,'Après 30 min'],[60,'Après 1 h']].map(([v,l])=>`<option value="${v}" ${v==al?'selected':''}>${l}</option>`).join('')}</select></div>
+  <div class="btns"><button class="btn2" id="sLock">Verrouiller maintenant</button><button class="btn2" id="sPwd">Changer le mot de passe</button><button class="btn2" id="sRec">Nouvelle clé de secours</button><button class="btn2 warn" id="sOff">Désactiver</button></div>
+  <div class="hint">Une ancienne sauvegarde s'ouvre avec le mot de passe en vigueur à sa date, ou avec ta clé de secours.</div>`
+ :`<div class="secst"><i></i>Chiffrement désactivé</div><div class="hint">Ton fichier est lisible en clair par quiconque y accède (ordinateur, OneDrive, sauvegardes). Le chiffrement le protège par un mot de passe ; une clé de secours te sera remise.</div>
+  <div class="btns"><button class="btn2" id="sOn" style="border-color:var(--am);color:var(--am)">Activer le chiffrement</button></div>`;
+ if(on){$('alSel').onchange=e=>{DB.prefs.autolock=+e.target.value;touch()};$('sLock').onclick=lock;$('sPwd').onclick=changePassword;$('sRec').onclick=newRecovery;$('sOff').onclick=disableEncryption}
+ else $('sOn').onclick=enableEncryption;
+ const st=DIR&&!NEEDPERM?`<div class="secst on"><i></i>Dossier : ${esc(DIR.name)}</div><div class="hint">${FILE} est écrit dans ce dossier à chaque modification, avec une copie datée par jour dans /${BKDIR} (${KEEP} jours). Idéalement un dossier synchronisé (OneDrive, Drive).</div><div class="btns"><button class="btn2" id="stDir">Changer de dossier</button></div>`
+  :FS_OK?`<div class="secst"><i></i>Aucun dossier relié</div><div class="hint">Tes données ne sont gardées que dans ce navigateur. Choisis un dossier pour les enregistrer dans un fichier.</div><div class="btns"><button class="btn2" id="stDir" style="border-color:var(--am);color:var(--am)">Choisir le dossier</button></div>`
+  :`<div class="secst"><i></i>Navigateur sans accès aux fichiers</div><div class="hint">Utilise Chrome ou Edge sur ordinateur. En attendant, exporte régulièrement.</div>`;
+ $('storeBody').innerHTML=st+`<div class="hint" style="margin-top:10px">Un seul fichier contient tout : saisies, réglages, objectifs, logo et bandeau.</div><div class="btns">${FS_OK?'<button class="btn2" id="stOther">Ouvrir un autre carnet</button>':''}<button class="btn2" id="stNew">Nouveau carnet</button></div>`;
+ if($('stDir'))$('stDir').onclick=()=>connectDir(false);
+ if($('stOther'))$('stOther').onclick=()=>connectDir(false);
+ $('stNew').onclick=async()=>{if(!confirm('Créer un nouveau carnet vide ?'+(DIR?` Ton carnet actuel reste dans le dossier « ${DIR.name} ».`:'')))return;if(await startFresh())openWizard(0,false)}}
+function renderSettings(){const C=CFG();renderSecurity();
+ document.querySelectorAll('[data-c]').forEach(i=>{i.value=C[i.dataset.c]||'';i.oninput=()=>{C[i.dataset.c]=i.value;touch();applyConfig()}});
+ $('pLogo').style.backgroundImage=C.logo?`url("${C.logo}")`:'';$('pBand').style.backgroundImage=C.bandeau?`url("${C.bandeau}")`:'';
+ document.querySelectorAll('[data-img]').forEach(b=>b.onclick=()=>{IMGT=b.dataset.img;$('imgFile').click()});
+ document.querySelectorAll('[data-imgdel]').forEach(b=>b.onclick=()=>{C[b.dataset.imgdel]=null;cfgChanged()});
+ $('brandColors').innerHTML=BRAND.map(([k,l])=>`<label>${l}<input type="color" data-bc="${k}" value="${C.couleurs[k]}"></label>`).join('');
+ $('brandColors').querySelectorAll('input').forEach(i=>{i.oninput=()=>{C.couleurs[i.dataset.bc]=i.value;recolor(C);touch();applyConfig()};i.onchange=()=>renderSettings()});
+ $('typeRows').innerHTML=STACK.map((k,i)=>{const t=C.types[k];return `<tr data-i="${i}"><td><span class="handle" title="Glisser pour réordonner">⋮⋮</span><span class="rk">${i+1}</span></td><td><input type="color" data-tc="${k}" value="${t.c}"></td><td><input class="ed" data-tl="${k}" value="${esc(t.l)}"></td>
+  <td><select class="ed" data-td="${k}" style="width:90px">${DURS.map(d=>`<option value="${d}" ${d==t.d?'selected':''}>${fmtD(d)}</option>`).join('')}</select></td>
+  <td><button class="sw ${t.ais?'on':''}" data-ta="${k}"></button></td></tr>`}).join('');
+ dragRows($('typeRows'),C.ordre,()=>{recolor(C);cfgChanged()});
+ $('typeRows').querySelectorAll('[data-tc]').forEach(i=>i.oninput=()=>{C.types[i.dataset.tc].c=i.value;C.couleursAuto=false;touch();applyConfig()});
+ $('typeRows').querySelectorAll('[data-tl]').forEach(i=>i.onchange=()=>{C.types[i.dataset.tl].l=i.value.trim()||defaultConfig().types[i.dataset.tl].l;cfgChanged()});
+ $('typeRows').querySelectorAll('[data-td]').forEach(i=>i.onchange=()=>{C.types[i.dataset.td].d=+i.value;cfgChanged()});
+ $('typeRows').querySelectorAll('[data-ta]').forEach(b=>b.onclick=()=>{const t=C.types[b.dataset.ta];t.ais=!t.ais;cfgChanged()});
+ const M=C.metriques,cnt=id=>E().filter(e=>e.ais?.[id]).length;
+ $('metRows').innerHTML=M.map((m,i)=>`<tr class="${m.actif?'':'arch'}" data-i="${i}"><td><button class="ibtn" data-mv="-1" ${i?'':'disabled'}>↑</button><button class="ibtn" data-mv="1" ${i<M.length-1?'':'disabled'}>↓</button></td>
+  <td><input class="ed" data-f="l" value="${esc(m.l)}" style="font-weight:700"></td><td><input class="ed" data-f="min" value="${esc(m.min)}" placeholder="ex. Challengé"></td><td><input class="ed" data-f="max" value="${esc(m.max)}" placeholder="ex. À l'aise"></td>
+  <td><button class="sw ${m.actif?'on':''}" data-act></button></td><td style="color:var(--grey);font-size:12.5px">${cnt(m.id)}</td>
+  <td>${cnt(m.id)?'':'<button class="ibtn del" data-del title="Supprimer">✕</button>'}</td></tr>`).join('');
+ $('metRows').querySelectorAll('tr').forEach(tr=>{const i=+tr.dataset.i,m=M[i];
+  tr.querySelectorAll('[data-f]').forEach(inp=>inp.onchange=()=>{m[inp.dataset.f]=inp.value.trim();if(!m.l)m.l='Métrique '+(i+1);cfgChanged()});
+  tr.querySelector('[data-act]').onclick=()=>{m.actif=!m.actif;cfgChanged()};
+  tr.querySelectorAll('[data-mv]').forEach(b=>b.onclick=()=>{const j=i+ +b.dataset.mv;if(j<0||j>=M.length)return;[M[i],M[j]]=[M[j],M[i]];cfgChanged()});
+  const d=tr.querySelector('[data-del]');if(d)d.onclick=()=>{M.splice(i,1);cfgChanged()}});
+}
+$('imgFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{CFG()[IMGT]=await readImg(f,IMGT);cfgChanged();if(!$('wiz').classList.contains('hide'))renderWiz();toast('Image enregistrée')}catch(err){toast('Image non reconnue')}e.target.value=''};
+$('resetColors').onclick=()=>{const C=CFG();C.couleurs={...PALETTES[0].c};C.couleursAuto=true;applyStackColors(C);cfgChanged()};
+$('addMet').onclick=()=>{const M=CFG().metriques,n=M.reduce((x,m)=>Math.max(x,+m.id.slice(1)||0),0)+1;M.push({id:'m'+n,l:'Nouvelle métrique',actif:true,min:'',max:''});cfgChanged();
+ const ins=$('metRows').querySelectorAll('input[data-f=l]');ins[ins.length-1].select()};
+
+/* ---------- onglets ---------- */
+let TAB='dash';
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{TAB=b.dataset.tab;document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x==b));
+ ['dash','metrics','list','settings'].forEach(id=>$(id).classList.toggle('hide',id!=TAB));renderAll()});
+
+/* ---------- popup ---------- */
+const S={type:'session',dur:90,pid:null,cdur:3,ais:{}};let NEWP=[];
+function mChips(el,items,cur,cls,cb){$(el).innerHTML=items.map(it=>`<button class="chip ${cls||''} ${it.v===cur?'on':''} ${it.add?'add':''}" style="${it.c?'--c:'+it.c:''}">${it.c?'<i></i>':''}${esc(it.l)}</button>`).join('');[...$(el).children].forEach((b,i)=>b.onclick=()=>cb(items[i].v))}
+function renderModal(){const t=TM[S.type];
+ mChips('mTypes',T.map(x=>({v:x.k,l:x.l,c:x.c})),S.type,'type',v=>{S.type=v;S.dur=TM[v].d;renderModal()});
+ mChips('mDurs',DURS.map(d=>({v:d,l:fmtD(d)})),S.dur,'',v=>{S.dur=v;renderModal()});
+ const recent=[...new Set([...NEWP,...[...E()].sort((a,b)=>b.date.localeCompare(a.date)).filter(e=>e.pid!=null&&(S.type=='supervision'?e.type=='supervision':e.type!='supervision')).map(e=>e.pid)])].slice(0,10);
+ if(S.pid!=null&&!recent.includes(S.pid))recent.unshift(S.pid);
+ mChips('mPeople',[...recent.map(id=>({v:id,l:pname(id)})),{v:'+',l:'+ Nouvelle',add:1}],S.pid,'',v=>{if(v=='+'){$('newP').classList.remove('hide');$('newP').focus()}else{S.pid=S.pid===v?null:v;renderModal()}});
+ mChips('mCdur',[1,2,3,6,9,12].map(n=>({v:n,l:n+' mois'})),S.cdur,'',v=>{S.cdur=v;renderModal()});
+ $('mPB').classList.toggle('hide',!t.p);$('mCR').classList.toggle('hide',!t.cr);$('mProp').classList.toggle('hide',!t.prop);
+ const MA=mActive();$('mAis').classList.toggle('hide',!t.ais||!MA.length);
+ $('mRates').innerHTML=MA.map(m=>`<div class="rate"><span>${esc(m.l)}${m.min||m.max?`<small>1 = ${esc(m.min)} · 5 = ${esc(m.max)}</small>`:''}</span><div class="dots">${[1,2,3,4,5].map(n=>`<span class="${n<=(S.ais[m.id]||0)?'on':''}" data-m="${m.id}" data-n="${n}">${n}</span>`).join('')}</div></div>`).join('');
+ $('mRates').querySelectorAll('span[data-n]').forEach(s=>s.onclick=()=>{const k=s.dataset.m,n=+s.dataset.n;if(S.ais[k]==n)delete S.ais[k];else S.ais[k]=n;renderModal()})}
+$('newP').onkeydown=e=>{const v=e.target.value.trim();if(e.key=='Enter'&&v){let p=DB.personnes.find(x=>byName(x.nom,v)==0);
+ if(!p){p={id:nextId(DB.personnes),nom:v};DB.personnes.push(p);touch()}NEWP.unshift(p.id);S.pid=p.id;e.target.value='';e.target.classList.add('hide');renderModal()}};
+['tCR','tSY'].forEach(i=>$(i).onclick=()=>$(i).classList.toggle('on'));
+const openM=()=>{$('fDate').value=today();S.ais={};renderModal();$('ov').classList.add('show')},closeM=()=>$('ov').classList.remove('show');
+$('openLog').onclick=openM;$('closeLog').onclick=closeM;$('ov').onclick=e=>{if(e.target==$('ov'))closeM()};document.addEventListener('keydown',e=>{if(e.key=='Escape')closeM()});
+$('mSave').onclick=()=>{const t=TM[S.type];
+ if(t.p&&S.pid==null&&['conversation','session','proposition','debrief'].includes(S.type)){toast('Choisis la personne');return}
+ const e={id:nextId(E()),date:$('fDate').value||today(),type:S.type,dur:S.dur,pid:t.p?S.pid:null,com:$('mCom').value.trim(),
+  cr:!!t.cr&&$('tCR').classList.contains('on'),syn:!!t.cr&&$('tSY').classList.contains('on'),ais:t.ais&&Object.keys(S.ais).length?{...S.ais}:null};
+ if(t.prop){e.eur=+$('mEur').value||0;e.engagement_mois=S.cdur;e.statut='attente';$('mEur').value=''}
+ E().push(e);$('mCom').value='';['tCR','tSY'].forEach(i=>$(i).classList.remove('on'));
+ closeM();touch();renderAll();toast(`${t.l} · ${fmtD(S.dur)} enregistré`)};
+
+/* ---------- rendu ---------- */
+function renderAll(){
+ if(!DB)return;
+ if(TAB=='dash'){bigKPI('kpisD');renderPrio();renderActs();renderObj()}
+ if(TAB=='metrics'){bigKPI('kpisM');smallKPI();renderYears();renderMonthly();renderEase()}
+ if(TAB=='list')renderList();
+ if(TAB=='settings')renderSettings();
+}
+
+function goTab(t){document.querySelector(`.tabs button[data-tab="${t}"]`).click()}
+
+/* =========================================================
+   PARCOURS DE DÉMARRAGE
+   ========================================================= */
+const WZ=['hello','principe','ident','types','suivi','axes','prio','actions','first','secu','done'];
+const WZL={hello:'Bienvenue',principe:'Le principe',ident:'Ton identité',types:'Tes entretiens',suivi:'Le suivi',axes:'Tes axes de progression',prio:'Priorités et objectifs',actions:'Premières actions',first:'Premier entretien',secu:'Sécurité',done:'C\'est prêt'};
+const ICO={home:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>',
+ lock:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>',
+ save:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>'};
+let WI=0,WFIRST=true,WBACK=false,WTMP={};
+function openWizard(i=0,first=true,back=false){WI=i;WFIRST=first;WBACK=back;WTMP={};$('lock').classList.add('hide');$('wiz').classList.remove('hide');renderWiz()}
+function closeWizard(){$('wiz').classList.add('hide')}
+function showWelcome(back){$('main').style.visibility='hidden';openWizard(0,true,back)}
+function wzSide(){const C=DB?CFG():defaultConfig(),K=C.couleurs,ini=(C.nom||'?').split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+ $('wzSide').style.background=C.bandeau?`linear-gradient(180deg,${K.fonce}d9,${K.fonce}f5),url("${C.bandeau}") center/cover`:`linear-gradient(165deg,${mix(K.fonce,K.bleu,.3)} 0%,${K.fonce} 75%)`;
+ $('wzBrand').innerHTML=`${C.logo?`<img src="${C.logo}" alt="">`:`<div class="ini">${esc(ini)}</div>`}<div><b>${esc(DB?C.nom:'Ton carnet')}</b><span>${esc(C.outil||'')}</span></div>`;
+ $('wzSteps').innerHTML=WZ.slice(1).map((k,i)=>{const n=i+1;return `<li class="${n<WI?'ok':n==WI?'cur':''}"><b>${n<WI?'✓':n}</b>${WZL[k]}</li>`}).join('');
+ $('wzQuote').textContent=DB?C.sousTitre:''}
+function renderWiz(){const k=WZ[WI],st=WS[k]();wzSide();
+ $('wzKicker').textContent=k=='hello'||k=='done'?'':`Étape ${WI} sur ${WZ.length-2}`;
+ $('wzTitle').textContent=st.t;$('wzLead').innerHTML=st.lead||'';$('wzBody').innerHTML=st.html;
+ $('wzBack').classList.toggle('hide',WI==0||k=='done');$('wzSkip').classList.toggle('hide',!st.skip);$('wzNext').textContent=st.next||'Continuer';
+ if(st.bind)st.bind();
+ $('wzNext').onclick=async()=>{let ok=true;if(st.go){$('wzNext').disabled=true;try{ok=await st.go()}catch(e){ok=false;toast('Une erreur est survenue')}$('wzNext').disabled=false}if(ok!==false)wzGo(1)};
+ $('wzSkip').onclick=()=>wzGo(1);$('wzBack').onclick=()=>wzGo(-1);$('wzMain').scrollTop=0}
+function wzGo(d){WI=Math.max(0,Math.min(WZ.length-1,WI+d));renderWiz()}
+const wzLive=()=>{touch();applyConfig();wzSide()};
+async function wzPickDir(){let nd;try{nd=await window.showDirectoryPicker({id:'aocoach',mode:'readwrite'})}catch(e){return}
+ const t=await readFile(nd,FILE);if(t){let f=null;try{f=JSON.parse(t)}catch(e){}if(!f||!sameBook(f,DB)){toast('Ce dossier contient déjà un autre carnet : choisis un dossier vide');return}}
+ DIR=nd;NEEDPERM=false;await idb.set('dir',nd);clearTimeout(saveT);await persist();banner(null);renderWiz()}
+async function activateEnc(pwd){await setDEK(crypto.getRandomValues(new Uint8Array(32)));const key=newRecoveryKey();
+ ENV={cles:{mdp:await wrapWith(pwd,IT_PWD),secours:await wrapWith(normRec(key),IT_REC)}};DB.prefs.autolock=DB.prefs.autolock??15;
+ touch();clearTimeout(saveT);await persist();await encryptOldBackups();updLockBtn();return key}
+
+const WS={
+ hello:()=>({t:'Bienvenue',html:`<div class="wzletter">
+  <p>Bonjour,</p>
+  <p>Ce carnet est né de ma pratique de coach. Il a un seul but : <b>t'aider à piloter ta pratique en te concentrant sur l'essentiel</b>. Où tu en es, ce sur quoi tu progresses, et la prochaine action à mener.</p>
+  <p>On devient un excellent coach en coachant beaucoup et en pratiquant délibérément. Ce carnet rend les deux visibles, en quelques secondes par entretien.</p>
+  <p>Le démarrage prend environ 5 minutes. Tout reste modifiable ensuite.</p>
+  <p class="sig">Allan<span>AO Coach</span></p></div>
+  ${WFIRST?`<div class="wzalt">${FS_OK?'<a id="wzOpen">J\'ai déjà un carnet : ouvrir son dossier</a>':''}<a id="wzImp">Importer une sauvegarde ou un modèle</a>${WBACK?'<a id="wzBackBook">Revenir à mon carnet</a>':''}</div>`:''}`,
+  next:'Commencer',
+  bind:()=>{if($('wzOpen'))$('wzOpen').onclick=()=>connectDir(false);if($('wzImp'))$('wzImp').onclick=()=>$('impFile').click();if($('wzBackBook'))$('wzBackBook').onclick=()=>{closeWizard();boot()}},
+  go:async()=>DB?true:await startFresh()}),
+
+ principe:()=>({t:'Le principe',lead:'Une application simple, qui travaille pour toi et ne garde rien ailleurs que chez toi.',
+  html:`<div class="wzcards">
+   <div class="wzc"><div class="ic">${ICO.home}</div><b>Chez toi, pas dans le cloud</b><p>L'application tourne dans ton navigateur. Rien n'est envoyé sur internet : toutes tes données tiennent dans un seul fichier, sur ton ordinateur ou ton OneDrive.</p></div>
+   <div class="wzc"><div class="ic">${ICO.lock}</div><b>Chiffré par ton mot de passe</b><p>Noms, notes, objectifs : illisibles sans ton mot de passe. Une clé de secours te permet de retrouver l'accès en cas d'oubli.</p></div>
+   <div class="wzc"><div class="ic">${ICO.save}</div><b>Enregistré en continu</b><p>Chaque modification est sauvegardée aussitôt, avec une copie datée chaque jour, conservée 30 jours.</p></div></div>
+   <div class="wznote">Tu choisiras ton dossier et ton mot de passe à la fin du parcours. D'ici là, tout est déjà gardé dans ce navigateur.</div>`,next:'Compris'}),
+
+ ident:()=>{const C=CFG(),K=C.couleurs,cur=PALETTES.findIndex(p=>Object.keys(p.c).every(k=>p.c[k].toLowerCase()==K[k].toLowerCase()));
+  return{t:'Ton identité',lead:'Ton carnet doit te ressembler : c\'est ce qui donne envie d\'y revenir. L\'aperçu à gauche se met à jour en direct.',
+  html:`<div class="wzgrid2"><div>
+   <label class="wzl" style="margin-top:0">Nom de ton cabinet</label><input class="fin" id="wNom" value="${esc(C.nom)}" placeholder="Ex. AO Coach">
+   <label class="wzl">Nom de l'outil</label><input class="fin" id="wOutil" value="${esc(C.outil)}">
+   <label class="wzl">Ta phrase de motivation</label><input class="fin" id="wSub" value="${esc(C.sousTitre)}">
+  </div><div>
+   <label class="wzl" style="margin-top:0">Logo et bandeau</label>
+   <div class="imgrow"><div class="imgprev" style="${C.logo?`background-image:url('${C.logo}')`:''}"></div><button class="btn2" id="wLogo">Choisir un logo</button>
+    <div class="imgprev tall" style="${C.bandeau?`background-image:url('${C.bandeau}')`:''}"></div><button class="btn2" id="wBand">Choisir un bandeau</button></div>
+   <label class="wzl">Palette</label><div class="pals">${PALETTES.map((p,i)=>`<button class="pal ${i==cur?'on':''}" data-p="${i}"><span>${stackColors(p.c).slice(0,4).concat([p.c.fonce]).map(c=>`<i style="background:${c}"></i>`).join('')}</span>${p.n}</button>`).join('')}</div>
+   <details><summary>Ajuster les couleurs</summary><div class="colors" style="margin-top:10px">${BRAND.map(([k,l])=>`<label>${l}<input type="color" data-wc="${k}" value="${K[k]}"></label>`).join('')}</div></details>
+  </div></div>`,
+  bind:()=>{[['wNom','nom'],['wOutil','outil'],['wSub','sousTitre']].forEach(([id,k])=>$(id).oninput=e=>{C[k]=e.target.value;wzLive()});
+   $('wLogo').onclick=()=>{IMGT='logo';$('imgFile').click()};$('wBand').onclick=()=>{IMGT='bandeau';$('imgFile').click()};
+   document.querySelectorAll('.pal').forEach(b=>b.onclick=()=>{C.couleurs={...PALETTES[+b.dataset.p].c};C.couleursAuto=true;applyStackColors(C);wzLive();renderWiz()});
+   document.querySelectorAll('[data-wc]').forEach(i=>i.oninput=()=>{C.couleurs[i.dataset.wc]=i.value;recolor(C);wzLive()})},
+  go:()=>{if(!C.nom.trim()){toast('Donne un nom à ton carnet');return false}return true}}},
+
+ types:()=>{const C=CFG(),O=C.ordre;
+  return{t:'Tes types d\'entretien',lead:'Nomme tes activités et classe-les <b>par ordre d\'importance</b> en les faisant glisser. Le n° 1 forme la base des graphiques et reçoit la couleur la plus forte.',
+  html:`<div class="wzgrid2 types"><table class="pt"><thead><tr><th style="width:64px">Rang</th><th></th><th>Libellé</th><th>Durée</th><th title="Noter ton aisance après ce type d'entretien">Aisance</th></tr></thead><tbody id="wTypes">${O.map((k,i)=>{const t=C.types[k];return `<tr data-i="${i}">
+   <td><span class="handle" title="Glisser pour réordonner">⋮⋮</span><span class="rk">${i+1}</span></td>
+   <td><input type="color" data-c="${k}" value="${t.c}"></td><td><input class="ed" data-l="${k}" value="${esc(t.l)}" style="font-weight:700"></td>
+   <td><select class="ed" data-du="${k}" style="width:84px">${DURS.map(d=>`<option value="${d}" ${d==t.d?'selected':''}>${fmtD(d)}</option>`).join('')}</select></td>
+   <td><button class="sw ${t.ais?'on':''}" data-a="${k}"></button></td></tr>`}).join('')}</tbody></table>
+   <div class="stackprev"><small>Aperçu d'une barre</small>${[...O].reverse().map((k,i)=>`<div class="r"><i style="background:${C.types[k].c}"></i>${esc(C.types[k].l)}</div>`).join('')}<small>↑ n° 1 à la base</small></div></div>
+   <div class="hint">La colonne Aisance indique après quels entretiens tu notes tes axes de progression. Le rôle de chaque type dans les calculs ne change pas.${C.couleursAuto?'':' Tu as personnalisé des couleurs : elles ne suivent plus la palette (choisis une palette à l\'étape précédente pour revenir à l\'automatique).'}</div>`,
+  bind:()=>{const B=$('wzBody');
+   dragRows($('wTypes'),O,()=>{recolor(C);wzLive();renderWiz()});
+   B.querySelectorAll('[data-c]').forEach(i=>i.onchange=()=>{C.types[i.dataset.c].c=i.value;C.couleursAuto=false;wzLive();renderWiz()});
+   B.querySelectorAll('[data-l]').forEach(i=>i.onchange=()=>{C.types[i.dataset.l].l=i.value.trim()||defaultConfig().types[i.dataset.l].l;wzLive();renderWiz()});
+   B.querySelectorAll('[data-du]').forEach(i=>i.onchange=()=>{C.types[i.dataset.du].d=+i.value;wzLive()});
+   B.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const t=C.types[b.dataset.a];t.ais=!t.ais;wzLive();renderWiz()})}}},
+
+ suivi:()=>{const L=k=>`<strong>${esc(TM[k].l)}</strong>`;return{t:'Comment le suivi fonctionne',lead:'Peu d\'indicateurs, regardés souvent : on progresse sur ce que l\'on mesure.',
+  html:`<div class="wzcards">
+   <div class="wzc"><div class="ic">1</div><b>Coacher beaucoup</b><p>Tes heures de ${L('conversation')} et de ${L('session')}, et le nombre de personnes accompagnées. C'est le volume qui muscle ta pratique.</p></div>
+   <div class="wzc"><div class="ic">2</div><b>Pratiquer délibérément</b><p>${L('debrief')}, ${L('supervision')}, et une note d'aisance après chaque entretien sur tes axes de progression. C'est ce qui transforme l'expérience en compétence.</p></div>
+   <div class="wzc"><div class="ic">3</div><b>Développer ton activité</b><p>${L('conversation')} offerte, puis ${L('proposition')} (montant proposé), puis ${L('session')} sous contrat (CA accepté) : le chemin d'un premier échange à un accompagnement.</p></div></div>
+   <div class="flow3"><div><b>Tableau de bord</b>Ton cap : priorités, plan d'action, cibles du trimestre.</div><div><b>Métriques</b>Tes tendances : temps passé chaque mois, aisance dans le temps.</div><div><b>Mes saisies</b>Le détail de chaque entretien, filtrable et modifiable.</div></div>
+   <div class="wznote">Au quotidien : un clic sur « + Enregistrer un temps » après chaque entretien. Moins de 30 secondes.</div>`,next:'Compris'}},
+
+ axes:()=>{const M=metrics(),cnt=id=>E().filter(e=>e.ais?.[id]).length;
+  const SUG=[["Atteinte de l'obj. du rdv",'Pas atteint','Atteint'],['Conduite & rapport','Challengé',"À l'aise"],['Niveau de jeu','Faible','Élevé'],['Curseur câlin/challenge','Câlin','Challenge'],['Écoute','Challengé',"À l'aise"],['Questionnement','Challengé',"À l'aise"],['Reformulation','Challengé',"À l'aise"],['Présence','Challengé',"À l'aise"],['Gestion du silence','Challengé',"À l'aise"]].filter(s=>!M.some(m=>m.l==s[0]));
+  const add=(l,mi,ma)=>{const n=M.reduce((x,m)=>Math.max(x,+m.id.slice(1)||0),0)+1;M.push({id:'m'+n,l,actif:true,min:mi,max:ma});wzLive();renderWiz()};
+  return{t:'Tes axes de progression',lead:'Après chaque entretien, tu notes de 1 à 5 les dimensions que tu travailles en ce moment. <b>Deux à cinq axes</b>, c\'est l\'idéal.',
+  html:`<table class="pt"><thead><tr><th>Axe</th><th>Repère du 1</th><th>Repère du 5</th><th style="width:60px"></th></tr></thead><tbody>${M.map((m,i)=>`<tr class="${m.actif?'':'arch'}">
+   <td><input class="ed" data-f="l" data-i="${i}" value="${esc(m.l)}" style="font-weight:700"></td><td><input class="ed" data-f="min" data-i="${i}" value="${esc(m.min)}" placeholder="ex. Challengé"></td><td><input class="ed" data-f="max" data-i="${i}" value="${esc(m.max)}" placeholder="ex. À l'aise"></td>
+   <td>${cnt(m.id)?`<button class="sw ${m.actif?'on':''}" data-act="${i}" title="Suivi"></button>`:`<button class="ibtn del" data-del="${i}" title="Retirer">✕</button>`}</td></tr>`).join('')||'<tr><td colspan="4" class="empty">Aucun axe pour l\'instant.</td></tr>'}</tbody></table>
+   <label class="wzl">Suggestions</label><div class="chips">${SUG.map((s,i)=>`<button class="chip add" data-s="${i}">+ ${esc(s[0])}</button>`).join('')}<button class="chip add" id="wAddM">+ Autre axe</button></div>
+   <div class="wznote">Quand un axe est acquis, archive-le et ouvres-en un nouveau : l'historique de tes notes est toujours conservé.</div>`,
+  bind:()=>{const B=$('wzBody');
+   B.querySelectorAll('[data-f]').forEach(i=>i.onchange=()=>{M[+i.dataset.i][i.dataset.f]=i.value.trim();wzLive()});
+   B.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{M.splice(+b.dataset.del,1);wzLive();renderWiz()});
+   B.querySelectorAll('[data-act]').forEach(b=>b.onclick=()=>{const m=M[+b.dataset.act];m.actif=!m.actif;wzLive();renderWiz()});
+   B.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>add(...SUG[+b.dataset.s]));
+   $('wAddM').onclick=()=>{add('Nouvel axe','','');const ins=B.querySelectorAll('[data-f=l]');ins[ins.length-1]?.select()}},
+  go:()=>{if(!mActive().length){toast('Garde au moins un axe suivi');return false}return true}}},
+
+ prio:()=>{const P=DB.priorites,q=curQ(),O=DB.objectifs[q]??={},per=periods(q)[0];
+  if(!P.length)P.push({o:'',d:''});
+  const SUG=[['Développement commercial','Faire connaître mon offre'],['Volume de pratique','Coacher chaque semaine'],['Compétences','Progresser sur un axe précis'],['Structuration','Formaliser mon offre et mes tarifs']].filter(s=>!P.some(p=>p.o==s[0]));
+  const TG=[['h','Heures de coaching','h'],['conv','Conversations',''],['coach','Personnes coachées',''],['delib','Pratique délibérée','h'],['ca','CA accepté','€']];
+  return{t:'Tes priorités et tes objectifs',lead:'Choisis peu de priorités, et des cibles concrètes pour le trimestre : c\'est l\'horizon où l\'on agit vraiment.',
+  html:`<div class="wzh">Tes objectifs prioritaires <small>3 maximum, c'est ce qui compte vraiment</small></div>
+   ${P.map((p,i)=>`<div class="prow"><span class="rank">${i+1}</span><input class="fin" data-po="${i}" value="${esc(p.o)}" placeholder="Objet (ex. Développement commercial)"><input class="fin" data-pd="${i}" value="${esc(p.d)}" placeholder="Ce que ça veut dire pour toi"><button class="ibtn del" data-pdel="${i}">✕</button></div>`).join('')}
+   <div class="chips" style="margin:6px 0 4px">${SUG.map((s,i)=>`<button class="chip add" data-ps="${i}">+ ${esc(s[0])}</button>`).join('')}${P.length<5?'<button class="chip add" id="wAddP">+ Autre</button>':''}</div>
+   <div class="wzh" style="margin-top:22px">Tes cibles du trimestre <small>${per.s}</small></div>
+   <input class="fin" id="wAmb" value="${esc(O.amb||'')}" placeholder="Ton ambition pour ce trimestre, en une phrase">
+   <div class="targets" style="margin-top:10px">${TG.map(([k,l,u])=>`<label>${l}<input class="fin" type="number" min="0" data-t="${k}" value="${O[k]??''}" placeholder="${u||'—'}"></label>`).join('')}</div>
+   <div class="hint">Semestre et année se fixent plus tard dans « Suivi indicateurs », sur le tableau de bord.</div>`,
+  bind:()=>{const B=$('wzBody');
+   B.querySelectorAll('[data-po]').forEach(i=>i.oninput=()=>{P[+i.dataset.po].o=i.value;touch()});
+   B.querySelectorAll('[data-pd]').forEach(i=>i.oninput=()=>{P[+i.dataset.pd].d=i.value;touch()});
+   B.querySelectorAll('[data-pdel]').forEach(b=>b.onclick=()=>{P.splice(+b.dataset.pdel,1);touch();renderWiz()});
+   B.querySelectorAll('[data-ps]').forEach(b=>b.onclick=()=>{const s=SUG[+b.dataset.ps],e=P.find(p=>!p.o);if(e){e.o=s[0];e.d=e.d||s[1]}else P.push({o:s[0],d:s[1]});touch();renderWiz()});
+   if($('wAddP'))$('wAddP').onclick=()=>{P.push({o:'',d:''});renderWiz();const ins=B.querySelectorAll('[data-po]');ins[ins.length-1]?.focus()};
+   $('wAmb').oninput=e=>{O.amb=e.target.value;touch()};
+   B.querySelectorAll('[data-t]').forEach(i=>i.oninput=()=>{if(i.value==='')delete O[i.dataset.t];else O[i.dataset.t]=+i.value;touch()})},
+  go:()=>{DB.priorites=P.filter(p=>p.o.trim()||p.d.trim());touch();return true}}},
+
+ actions:()=>{const names=DB.priorites.map(p=>p.o).filter(Boolean),A=DB.actions;
+  if(!WTMP.actInit){WTMP.actInit=1;if(!A.some(a=>a.s=='encours'))A.push({id:nextId(A),p:names[0]||'',a:'',d:addDays(today(),14),r:'',s:'encours'})}
+  const L=A.filter(a=>a.s=='encours');
+  return{t:'Tes premières actions',lead:'Une priorité sans action reste une intention. Note les prochains pas concrets, avec une date : ils apparaîtront en rouge s\'ils prennent du retard.',
+  html:`${L.map(a=>`<div class="arow"><select class="fin" data-ap="${a.id}">${names.map(n=>`<option ${n==a.p?'selected':''}>${esc(n)}</option>`).join('')}<option value="" ${names.includes(a.p)?'':'selected'}>Sans objectif</option></select>
+   <input class="fin" data-aa="${a.id}" value="${esc(a.a)}" placeholder="Ex. Proposer 3 conversations offertes à mon réseau"><input class="fin" type="date" data-ad="${a.id}" value="${a.d||''}"><button class="ibtn del" data-adel="${a.id}">✕</button></div>`).join('')}
+   <button class="addl" id="wAddA">+ Ajouter une action</button>`,
+  bind:()=>{const B=$('wzBody'),f=id=>A.find(a=>a.id==id);
+   B.querySelectorAll('[data-ap]').forEach(i=>i.onchange=()=>{f(i.dataset.ap).p=i.value;touch()});
+   B.querySelectorAll('[data-aa]').forEach(i=>i.oninput=()=>{f(i.dataset.aa).a=i.value;touch()});
+   B.querySelectorAll('[data-ad]').forEach(i=>i.onchange=()=>{f(i.dataset.ad).d=i.value;touch()});
+   B.querySelectorAll('[data-adel]').forEach(b=>b.onclick=()=>{A.splice(A.indexOf(f(b.dataset.adel)),1);touch();renderWiz()});
+   $('wAddA').onclick=()=>{A.push({id:nextId(A),p:names[0]||'',a:'',d:addDays(today(),14),r:'',s:'encours'});renderWiz();const ins=B.querySelectorAll('[data-aa]');ins[ins.length-1]?.focus()}},
+  go:()=>{DB.actions=A.filter(a=>a.s!='encours'||a.a.trim());touch();return true}}},
+
+ first:()=>{const f=WTMP.f=WTMP.f||{type:'session',dur:TM.session.d,date:today(),nom:'',com:'',ais:{}},t=TM[f.type],MA=mActive();
+  if(WTMP.saved)return{t:'Ton premier entretien',html:`<div class="ok-box">✓ Entretien enregistré. Bravo, ton carnet est lancé.</div><div class="hint" style="margin-top:12px">Ensuite, tu enregistreras chaque entretien avec le bouton « + Enregistrer un temps », en haut à droite.</div>`};
+  const types=T.filter(x=>x.p&&x.k!='debrief'&&x.k!='supervision');
+  return{t:'Ton premier entretien',lead:'Enregistre ton dernier entretien : c\'est exactement le geste que tu feras après chaque séance.',skip:true,next:'Enregistrer et continuer',
+  html:`<div class="wzgrid2"><div>
+   <label class="wzl" style="margin-top:0">Type</label><div class="chips">${types.map(x=>`<button class="chip type ${x.k==f.type?'on':''}" style="--c:${x.c}" data-ft="${x.k}"><i></i>${esc(x.l)}</button>`).join('')}</div>
+   <label class="wzl">Date</label><input class="fin" type="date" id="fwD" value="${f.date}">
+   <label class="wzl">Durée</label><div class="chips">${DURS.map(d=>`<button class="chip ${d==f.dur?'on':''}" data-fd="${d}">${fmtD(d)}</button>`).join('')}</div>
+   <label class="wzl">Personne</label><input class="fin" id="fwP" list="fwPL" value="${esc(f.nom)}" placeholder="Prénom Nom (ou initiales)"><datalist id="fwPL">${DB.personnes.map(p=>`<option value="${esc(p.nom)}">`).join('')}</datalist>
+   <label class="wzl">Ce qu'on a vu</label><input class="fin" id="fwC" value="${esc(f.com)}" placeholder="1 ligne : thème, déclic, pattern repéré…">
+  </div><div>${t.ais&&MA.length?`<label class="wzl" style="margin-top:0">Ton aisance</label>${MA.map(m=>`<div class="rate"><span>${esc(m.l)}${m.min||m.max?`<small>1 = ${esc(m.min)} · 5 = ${esc(m.max)}</small>`:''}</span><div class="dots">${[1,2,3,4,5].map(n=>`<span class="${n<=(f.ais[m.id]||0)?'on':''}" data-fm="${m.id}" data-fn="${n}">${n}</span>`).join('')}</div></div>`).join('')}`:'<div class="wznote" style="margin-top:0">Ce type d\'entretien ne comporte pas de notes d\'aisance.</div>'}</div></div>`,
+  bind:()=>{const B=$('wzBody');
+   B.querySelectorAll('[data-ft]').forEach(b=>b.onclick=()=>{f.type=b.dataset.ft;f.dur=TM[f.type].d;renderWiz()});
+   B.querySelectorAll('[data-fd]').forEach(b=>b.onclick=()=>{f.dur=+b.dataset.fd;renderWiz()});
+   B.querySelectorAll('[data-fm]').forEach(s=>s.onclick=()=>{const k=s.dataset.fm,n=+s.dataset.fn;if(f.ais[k]==n)delete f.ais[k];else f.ais[k]=n;renderWiz()});
+   $('fwD').onchange=e=>f.date=e.target.value;$('fwP').oninput=e=>f.nom=e.target.value;$('fwC').oninput=e=>f.com=e.target.value},
+  go:()=>{const nom=f.nom.trim();if(!nom){toast('Indique la personne, ou clique sur « Plus tard »');return false}
+   let p=DB.personnes.find(x=>byName(x.nom,nom)==0);if(!p){p={id:nextId(DB.personnes),nom};DB.personnes.push(p)}
+   const tt=TM[f.type],e={id:nextId(E()),date:f.date||today(),type:f.type,dur:f.dur,pid:p.id,com:f.com.trim(),cr:false,syn:false,ais:tt.ais&&Object.keys(f.ais).length?{...f.ais}:null};
+   if(tt.prop){e.eur=0;e.engagement_mois=3;e.statut='attente'}
+   E().push(e);touch();WTMP.saved=1;return true}}},
+
+ secu:()=>{const s=WTMP.sec=WTMP.sec||{enc:true,p1:'',p2:''};
+  return{t:'Mets ton carnet en sécurité',lead:'Dernière étape : où ranger ton fichier, et comment le protéger.',next:'Terminer',
+  html:`<div class="wzgrid2"><div class="wzc"><div class="ic">${ICO.home}</div><b>Où ranger ton carnet</b>
+   ${FS_OK?(DIR?`<div class="ok-box" style="margin:10px 0">✓ Dossier « ${esc(DIR.name)} »</div><button class="btn2" id="wDir">Changer de dossier</button>`
+     :`<p>Choisis un dossier, idéalement synchronisé (OneDrive, Drive) : ton carnet te suit d'un ordinateur à l'autre.</p><button class="btn2" id="wDir" style="margin-top:12px;border-color:var(--am);color:var(--am)">Choisir le dossier</button>`)
+   :`<p>Ce navigateur ne sait pas enregistrer dans un dossier. Utilise Chrome ou Edge sur ordinateur, ou exporte régulièrement ton carnet.</p>`}</div>
+   <div class="wzc"><div class="ic">${ICO.lock}</div><b>Protéger par un mot de passe</b>
+   ${DEKK?`<div class="ok-box" style="margin-top:10px">✓ Ton carnet est déjà chiffré</div>`:`
+    <label class="small" style="margin:8px 0"><input type="checkbox" id="wEnc" ${s.enc?'checked':''}> Chiffrer mon carnet (recommandé)</label>
+    <div id="wPw" class="${s.enc?'':'hide'}"><input class="fin" type="password" id="wP1" value="${esc(s.p1)}" placeholder="Mot de passe (10 caractères min.)" autocomplete="new-password">
+    <input class="fin" type="password" id="wP2" value="${esc(s.p2)}" placeholder="Confirmer" autocomplete="new-password" style="margin-top:8px">
+    <div class="hint">Une phrase facile à retenir est idéale. Une clé de secours te sera remise juste après.</div></div>`}</div></div>`,
+  bind:()=>{if($('wDir'))$('wDir').onclick=wzPickDir;
+   if($('wEnc')){$('wEnc').onchange=e=>{s.enc=e.target.checked;$('wPw').classList.toggle('hide',!s.enc)};$('wP1').oninput=e=>s.p1=e.target.value;$('wP2').oninput=e=>s.p2=e.target.value}},
+  go:async()=>{
+   if(FS_OK&&!DIR&&!confirm('Sans dossier, ton carnet n\'est gardé que dans ce navigateur. Continuer quand même ?'))return false;
+   if(!DEKK&&s.enc){if(s.p1.length<10){toast('Mot de passe : 10 caractères minimum');return false}if(s.p1!==s.p2){toast('Les deux mots de passe sont différents');return false}
+    toast('Chiffrement en cours…');const key=await activateEnc(s.p1);s.p1=s.p2='';await showRecoveryKey(key)}
+   return true}}},
+
+ done:()=>{const n=(a,x)=>a.length+' '+x+(a.length>1?'s':''),it=(ok,txt)=>`<li class="${ok?'':'no'}"><i>${ok?'✓':'–'}</i>${txt}</li>`;
+  return{t:'C\'est prêt',lead:'Ton carnet est configuré. Tout reste modifiable dans Paramètres, et le parcours peut être relancé à tout moment.',next:'Ouvrir mon tableau de bord',
+  html:`<ul class="sumlist">
+   ${it(true,'Identité : '+esc(CFG().nom))}${it(true,'7 types d\'entretien, dans ton ordre')}
+   ${it(mActive().length,n(mActive(),'axe')+' de progression')}${it(DB.priorites.length,n(DB.priorites,'objectif prioritaire'))}
+   ${it(DB.actions.filter(a=>a.s=='encours').length,n(DB.actions.filter(a=>a.s=='encours'),'action'))}${it(E().length,E().length?'Premier entretien enregistré':'Premier entretien à saisir')}
+   ${it(DIR&&!NEEDPERM,DIR?'Dossier « '+esc(DIR.name)+' »':'Pas de dossier : gardé dans ce navigateur')}${it(DEKK,DEKK?'Chiffré par mot de passe':'Non chiffré')}</ul>
+   <div class="wznote">Le réflexe à prendre : après chaque entretien, « + Enregistrer un temps ». Et une fois par semaine, un coup d'œil au tableau de bord.</div>`,
+  go:()=>{DB.prefs.onboarded=true;touch();closeWizard();$('main').style.visibility='visible';afterLoad();goTab('dash');window.scrollTo({top:0});toast('Bonne pratique !');return false}}}
+};
+$('reTour').onclick=()=>openWizard(2,false);
+
+/* ---------- démarrage ---------- */
+async function afterLoad(){
+ $('lock').classList.add('hide');$('main').style.visibility='visible';applyConfig();renderAll();updLockBtn();
+ if(!FS_OK){banner('nofs');setStatus('local')}
+ else if(DIR&&NEEDPERM){banner('reconnect');setStatus('local')}
+ else if(DIR){banner(null);setStatus('ok')}
+ else{banner('nodir');setStatus('local')}}
+async function boot(){
+ $('main').style.visibility='hidden';closeWizard();
+ try{if(!idb.db)await idb.open()}catch(e){}
+ const cached=await idb.get('data');let fileRaw=null;NEEDPERM=false;
+ if(FS_OK){DIR=DIR||await idb.get('dir')||null;
+  if(DIR){let p='prompt';try{p=await DIR.queryPermission({mode:'readwrite'})}catch(e){}
+   if(p==='granted'){const t=await readFile(DIR,FILE);if(t){try{fileRaw=JSON.parse(t)}catch(e){toast(`${FILE} est illisible : il n'a pas été modifié. Restaure une sauvegarde.`);setStatus('err','Fichier illisible');return}}}
+   else NEEDPERM=true}}
+ let raw=fileRaw;   // le fichier du dossier fait foi ; la copie navigateur ne l'emporte que si c'est le même carnet, plus récent
+ if(cached&&(!raw||(sameBook(cached,raw)&&(cached.enregistre_le||'')>(raw.enregistre_le||''))))raw=cached;
+ if(!raw){showWelcome();return}
+ if(isEnc(raw)){
+  let plain=await tryCurrentKey(raw);
+  if(plain)ENV={cles:raw.cles};
+  else{const r=await askSecret({title:'Carnet verrouillé',text:'Saisis ton mot de passe pour ouvrir tes données.',other:true,verify:(s,w)=>openEnv(raw,s,w,true)});plain=r.r;
+   if(r.which=='secours'){const pwd=await askNewPassword('Choisis un nouveau mot de passe');if(pwd){ENV.cles={...ENV.cles,mdp:await wrapWith(pwd,IT_PWD)};toast('Nouveau mot de passe enregistré')}}}
+  DB=migrate(plain);
+ }else{await setDEK(null);ENV=null;DB=migrate(raw)}
+ await afterLoad();
+ if(raw!==fileRaw||raw.version_schema!==VERSION||raw.id!==DB.id||ENV&&raw.cles!==ENV.cles){clearTimeout(saveT);await persist()}
+ else if(DIR&&!NEEDPERM){try{await dailyBackup(JSON.stringify(raw,null,1))}catch(e){}}
+}
+if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+boot();
+</script></body></html>
